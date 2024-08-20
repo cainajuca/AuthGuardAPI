@@ -1,1 +1,1 @@
-// Middleware creation
+export * from './authentication';

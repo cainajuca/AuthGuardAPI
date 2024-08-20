@@ -1,10 +1,21 @@
 import { Request, Response } from 'express';
-import { getUserByUsername, createUser } from '../db/users'; // no tutorial é ..db/users
+import { getUserByUsername, createUser } from '../db/users';
 
-import { generateToken } from '../auth/jwt';
-import { hashPassword, verifyPassword } from '../auth/bcrypt';
+import { generateToken } from '../utils/jwt';
+import { hashPassword, verifyPassword } from '../utils/bcrypt';
 
-export const login = async (req: Request, res: Response) =>{
+const login_get = async (req: Request, res: Response) => {
+    try {
+		return res.status(200).json({
+            not: "implemented" 
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(error);
+    }
+}
+
+const login_post = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
 
@@ -22,12 +33,13 @@ export const login = async (req: Request, res: Response) =>{
 			return res.status(401).send('Invalid username or password');
 		
 		const token = generateToken({
-			email: user.email,
+			_id: user._id.toString(),
 			username: user.username,
 		});
 		
 		return res.status(200).json({
             user: {
+                id: user._id,
 				username: user.username,
 				email: user.email,
 			},
@@ -40,9 +52,20 @@ export const login = async (req: Request, res: Response) =>{
     }
 }
 
-export const register = async (req: Request, res: Response) => {
+const signup_get = async (req: Request, res: Response) => {
     try {
-        // campos do UserSchema
+		return res.status(200).json({
+            not: "implemented" 
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json(error);
+    }
+}
+
+const signup_post = async (req: Request, res: Response) => {
+    try {
+        // UserSchema properties
         const { username, email, password } = req.body;
 
         if(!username || !email || !password){
@@ -62,14 +85,18 @@ export const register = async (req: Request, res: Response) => {
 			password: passwordHash,
         };
 
-        createUser(newUser);
+        const createdUser = await createUser(newUser);
 
-        const token = generateToken({ email: newUser.email, username: newUser.username });
+        const token = generateToken({
+			_id: createdUser._id.toString(),
+			username: createdUser.username,
+		});
 
         return res.status(201).json({
             user: {
-				username: newUser.username,
-				email: newUser.email,
+                id: createdUser._id,
+				username: createdUser.username,
+				email: createdUser.email,
 			},
             token 
         });
@@ -78,4 +105,9 @@ export const register = async (req: Request, res: Response) => {
         console.log(error);
         return res.sendStatus(400);
     }
+}
+
+export const auth = {
+    login_get, login_post,
+    signup_get, signup_post
 }

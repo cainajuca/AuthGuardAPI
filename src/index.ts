@@ -6,7 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 
-import router from './router';
+import router from './routes';
 import { config } from './config/env';
 
 const app = express();

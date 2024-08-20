@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 export * from './authentication';
-export * from './owner';
+export * from './authorization';
 
 export interface AuthenticatedRequest extends Request {
     userId?: string;

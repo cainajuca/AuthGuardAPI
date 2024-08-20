@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../middlewares';
 import jwt from 'jsonwebtoken';
 
 import { JwtPayload, secretKey } from '../utils/jwt'
 
-export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const bearerToken = req.headers.authorization?.split(' ')[1];
 
     if (!bearerToken) {
@@ -11,8 +12,9 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
     }
 
     try {
-        
-        jwt.verify(bearerToken, secretKey) as JwtPayload;
+        const decoded = jwt.verify(bearerToken, secretKey) as JwtPayload;
+
+        req.userId = decoded._id;
 
         next();
     } catch (err) {

@@ -58,3 +58,12 @@ O projeto segue padrões e princípios sólidos de engenharia de software para g
 ## **Referências e Links**
 
 (Preencher posteriormente)
+
+
+Apagar abaixo:
+		"build": "yarn workspaces run build",
+		"lint": "yarn workspaces run lint",
+		"test": "yarn workspaces run test",
+		"start": "yarn workspace @user-auth/1-presentation start",
+		"dev": "yarn workspace @user-auth/1-presentation dev",
+		"clean": "yarn workspaces run clean && rm -rf node_modules"

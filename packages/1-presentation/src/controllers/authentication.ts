@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { getUserByUsername, createUser } from '../db/users';
 
-import { generateToken } from '../utils/jwt';
-import { hashPassword, verifyPassword } from '../utils/bcrypt';
+import { getUserByUsername, createUser } from '@infra/data/users';
+
+import { generateToken } from '@shared/utils/jwt';
+import { hashPassword, verifyPassword } from '@shared/utils/bcrypt';
 
 const login_get = async (req: Request, res: Response) => {
     try {

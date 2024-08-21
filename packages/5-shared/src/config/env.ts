@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.resolve('@shared', '../../../.env') });
 
 interface EnvConfig {
 	API_PORT: string;

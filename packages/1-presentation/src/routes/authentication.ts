@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateJWT } from '../middlewares';
 
-import { auth } from '../controllers/authentication';
+import { auth } from '@presentation/controllers/authentication';
 
 export default (router: Router) => {
     router.get('/auth/signup', authenticateJWT, auth.signup_get);

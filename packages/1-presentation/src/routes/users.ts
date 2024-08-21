@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticateJWT, authorizationJWT } from '../middlewares';
 
-import { users } from '../controllers/users'
+import { users } from '@presentation/controllers/users'
 
 export default (router: Router) => {
     router.get('/users', authenticateJWT, users.getAllUsers);

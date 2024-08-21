@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthenticatedRequest } from '../middlewares';
+import { AuthenticatedRequest } from '.';
 import jwt from 'jsonwebtoken';
 
-import { JwtPayload, secretKey } from '../utils/jwt'
+import { JwtPayload, secretKey } from '@shared/utils/jwt'
 
 export const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const bearerToken = req.headers.authorization?.split(' ')[1];

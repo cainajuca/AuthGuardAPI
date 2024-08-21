@@ -1,10 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "NodeNext",
-        "baseUrl": "src",
-        "outDir": "dist",
-        "sourceMap": true,
-        "noImplicitAny": true
+	"compilerOptions": {
+		"module": "NodeNext",
+		"baseUrl": ".",
+		"outDir": "dist",
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"paths": {      
+			"@root/*": ["./*"],
+      "@presentation/*": ["packages/1-presentation/src/*"],
+      "@application/*": ["packages/2-application/src/*"],
+      "@domain/*": ["packages/3-domain/src/*"],
+      "@infra/*": ["packages/4-infra/src/*"],
+      "@shared/*": ["packages/5-shared/src/*"]
     },
-    "include": ["src/**/*"]
+	},
+	"include": ["packages/**/*"],
+	"exclude": ["node_modules", "dist"]
 }

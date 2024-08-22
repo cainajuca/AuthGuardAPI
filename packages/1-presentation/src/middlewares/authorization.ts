@@ -2,23 +2,23 @@ import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '.';
 
 export const authorizationJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    try {
+	try {
 
-        const { id } = req.params;
+		const { id } = req.params;
 
-        const currentUserId = req.userId;
+		const currentUserId = req.userId;
 
-        if(!currentUserId){
-            return res.sendStatus(403);
-        }
+		if(!currentUserId){
+			return res.sendStatus(403);
+		}
 
-        // current user can only modify his own data
-        if(currentUserId != id){
-            return res.sendStatus(403);
-        }
+		// current user can only modify his own data
+		if(currentUserId != id){
+			return res.sendStatus(403);
+		}
 
-        next();
-    } catch (err) {
-        return res.status(403).json({ message: 'Invalid or expired token.' });
-    }
+		next();
+	} catch (err) {
+		return res.status(403).json({ message: 'Invalid or expired token.' });
+	}
 };

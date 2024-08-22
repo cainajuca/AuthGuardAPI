@@ -6,29 +6,29 @@ import { generateToken } from '@shared/utils/jwt';
 import { hashPassword, verifyPassword } from '@shared/utils/bcrypt';
 
 const login_get = async (req: Request, res: Response) => {
-    try {
+	try {
 		return res.status(200).json({
-            not: "implemented" 
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json(error);
-    }
+			not: "implemented" 
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json(error);
+	}
 }
 
 const login_post = async (req: Request, res: Response) => {
-    try {
-        const { username, password } = req.body;
+	try {
+		const { username, password } = req.body;
 
-        if(!username || !password)
-            return res.status(400).json('Credentials are not in the correct format');
+		if(!username || !password)
+			return res.status(400).json('Credentials are not in the correct format');
         
-        const user = await getUserByUsername(username).select('+password');
+		const user = await getUserByUsername(username).select('+password');
 
-        if(!user)
-            return res.status(400).json('User does not exist');
+		if(!user)
+			return res.status(400).json('User does not exist');
 
-        const isPasswordValid = await verifyPassword(password, user.password);
+		const isPasswordValid = await verifyPassword(password, user.password);
 
   		if (!isPasswordValid)
 			return res.status(401).send('Invalid username or password');
@@ -39,76 +39,76 @@ const login_post = async (req: Request, res: Response) => {
 		});
 		
 		return res.status(200).json({
-            user: {
-                id: user._id,
+			user: {
+				id: user._id,
 				username: user.username,
 				email: user.email,
 			},
-            token 
-        });
+			token 
+		});
 
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json(error);
-    }
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json(error);
+	}
 }
 
 const signup_get = async (req: Request, res: Response) => {
-    try {
+	try {
 		return res.status(200).json({
-            not: "implemented" 
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json(error);
-    }
+			not: "implemented" 
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(400).json(error);
+	}
 }
 
 const signup_post = async (req: Request, res: Response) => {
-    try {
-        // UserSchema properties
-        const { username, email, password } = req.body;
+	try {
+		// UserSchema properties
+		const { username, email, password } = req.body;
 
-        if(!username || !email || !password){
-            return res.sendStatus(400);
-        }
+		if(!username || !email || !password){
+			return res.sendStatus(400);
+		}
 
-        const existingUser = await getUserByUsername(username);
+		const existingUser = await getUserByUsername(username);
 
-        if(existingUser){
-            return res.sendStatus(400);
-        }
+		if(existingUser){
+			return res.sendStatus(400);
+		}
 
-        const passwordHash = await hashPassword(password);
-        const newUser = {
-            username,
-            email,
+		const passwordHash = await hashPassword(password);
+		const newUser = {
+			username,
+			email,
 			password: passwordHash,
-        };
+		};
 
-        const createdUser = await createUser(newUser);
+		const createdUser = await createUser(newUser);
 
-        const token = generateToken({
+		const token = generateToken({
 			_id: createdUser._id.toString(),
 			username: createdUser.username,
 		});
 
-        return res.status(201).json({
-            user: {
-                id: createdUser._id,
+		return res.status(201).json({
+			user: {
+				id: createdUser._id,
 				username: createdUser.username,
 				email: createdUser.email,
 			},
-            token 
-        });
+			token 
+		});
         
-    } catch(error){
-        console.log(error);
-        return res.sendStatus(400);
-    }
+	} catch(error){
+		console.log(error);
+		return res.sendStatus(400);
+	}
 }
 
 export const auth = {
-    login_get, login_post,
-    signup_get, signup_post
+	login_get, login_post,
+	signup_get, signup_post
 }

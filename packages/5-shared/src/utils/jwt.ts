@@ -10,5 +10,5 @@ export interface JwtPayload {
 export const secretKey = config.JWT_SECRET;
 
 export function generateToken(payload: JwtPayload): string {
-  return jwt.sign(payload, secretKey, { expiresIn: '1h' });
+	return jwt.sign(payload, secretKey, { expiresIn: '1h' });
 }

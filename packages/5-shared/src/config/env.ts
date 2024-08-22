@@ -26,6 +26,6 @@ requiredEnvVariables.forEach((key) => {
 export const config: EnvConfig = {
 	API_PORT: process.env.API_PORT!,
 	API_URL: process.env.API_URL!,
-    DB_CONNECTION_STRING: process.env.DB_CONNECTION_STRING!,
+	DB_CONNECTION_STRING: process.env.DB_CONNECTION_STRING!,
 	JWT_SECRET: process.env.JWT_SECRET!,
 };

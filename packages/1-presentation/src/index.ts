@@ -13,7 +13,7 @@ import { config } from '@shared/config/env';
 const app = express();
 
 app.use(cors({
-    credentials: true
+	credentials: true
 }))
 
 app.use(compression());
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 const server = http.createServer(app);
 
 server.listen(config.API_PORT, () => {
-    console.log(`Server running on ${config.API_URL}`);
+	console.log(`Server running on ${config.API_URL}`);
 });
 
 mongoose.Promise = Promise;

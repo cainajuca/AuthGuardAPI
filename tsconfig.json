@@ -1,5 +1,10 @@
 {
 	"compilerOptions": {
+
+		"experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "ES6",	
+
 		"module": "NodeNext",
 		"baseUrl": ".",
 		"outDir": "dist",
@@ -7,13 +12,13 @@
 		"noImplicitAny": true,
 		"paths": {      
 			"@root/*": ["./*"],
-      "@presentation/*": ["packages/1-presentation/src/*"],
-      "@application/*": ["packages/2-application/src/*"],
-      "@domain/*": ["packages/3-domain/src/*"],
-      "@infra/*": ["packages/4-infra/src/*"],
-      "@shared/*": ["packages/5-shared/src/*"]
+      "@presentation/*": ["src/1-presentation/*"],
+      "@application/*": ["src/2-application/*"],
+      "@domain/*": ["src/3-domain/*"],
+      "@infra/*": ["src/4-infra/*"],
+      "@shared/*": ["src/5-shared/*"]
     },
 	},
-	"include": ["packages/**/*"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]
 }

@@ -1,5 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
+
 import { UserDTO } from '../user-dto';
+
 import { User } from '@domain/entities/user';
 
 export class DeleteUserUseCaseInput

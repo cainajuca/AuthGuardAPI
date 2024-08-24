@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 
+import { IAuthController } from './protocols';
+
 import { generateToken } from '@shared/utils/jwt';
 import { verifyPassword } from '@shared/utils/bcrypt';
 import { SignUpUseCase } from '@application/use-cases/sign-up-use-case/sign-up-use-case';
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case/sign-up-use-case.dto';
-import { IAuthController } from './protocols';
 
 export class AuthController implements IAuthController {
 	constructor(

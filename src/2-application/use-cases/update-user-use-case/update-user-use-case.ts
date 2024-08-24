@@ -1,8 +1,9 @@
+import { IUpdateUserUseCase } from '../protocols';
+
 import { UpdateUserUseCaseInput, UpdateUserUseCaseOutput } from './update-user-use-case.dto'
 
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { hashPassword } from '@shared/utils/bcrypt'
-import { IUpdateUserUseCase } from '../protocols';
 
 export class UpdateUserUseCase implements IUpdateUserUseCase {
 

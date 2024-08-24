@@ -1,12 +1,14 @@
+import { ObjectId } from 'mongodb';
+
+import { ISignUpUseCase } from '../protocols';
+
 import { SignUpUseCaseInput, SignUpUseCaseOutput } from './sign-up-use-case.dto'
 
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { User } from '@domain/entities/user';
 import { hashPassword } from '@shared/utils/bcrypt'
 import { generateToken } from '@shared/utils/jwt'
-import { ISignUpUseCase } from '../protocols';
 
-import { ObjectId } from 'mongodb';
 
 export class SignUpUseCase implements ISignUpUseCase {
 	

@@ -1,6 +1,8 @@
-import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from './delete-user-use-case.dto'
-import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { IDeleteUserUseCase } from '../protocols';
+
+import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from './delete-user-use-case.dto'
+
+import { IUserRepository } from '@domain/repositories/user-repository.interface';
 
 export class DeleteUserUseCase implements IDeleteUserUseCase {
 

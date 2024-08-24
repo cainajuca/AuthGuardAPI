@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import { authenticateJWT, authorizationJWT } from '../middlewares';
+
 import { userController } from '@shared/config/dependency-injection';
 
 export default (router: Router) => {

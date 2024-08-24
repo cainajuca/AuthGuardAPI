@@ -2,9 +2,10 @@ import { Request, Response} from "express";
 
 import { UserVM } from "../view-models/user-vm";
 
+import { IUserController } from "./protocols";
+
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { UpdateUserUseCaseInput } from "@application/use-cases/update-user-use-case/update-user-use-case.dto";
-import { IUserController } from "./protocols";
 import { IDeleteUserUseCase, IUpdateUserUseCase } from "@application/use-cases/protocols";
 import { DeleteUserUseCaseInput } from "@application/use-cases/delete-user-use-case/delete-user-use-case.dto";
 

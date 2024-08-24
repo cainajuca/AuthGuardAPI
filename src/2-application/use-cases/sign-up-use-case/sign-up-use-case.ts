@@ -30,6 +30,7 @@ export class SignUpUseCase implements ISignUpUseCase {
 			input.name,
 			input.email,
 			passwordHash,
+			'user'
 		);
 
 		await this.userRepository.save(user);
@@ -37,6 +38,7 @@ export class SignUpUseCase implements ISignUpUseCase {
 		const token = generateToken({
 			_id: user.id.toString(),
 			username: user.username,
+			role: user.role,
 		});
 
 		return new SignUpUseCaseOutput(user, token)

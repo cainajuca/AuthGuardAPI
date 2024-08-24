@@ -50,6 +50,7 @@ export class AuthController implements IAuthController {
 			const token = generateToken({
 				_id: user.id.toString(),
 				username: user.username,
+				role: user.role,
 			});
 
 			return res.status(200).json({
@@ -57,6 +58,7 @@ export class AuthController implements IAuthController {
 					id: user.id,
 					username: user.username,
 					email: user.email,
+					role: user.role
 				},
 				token 
 			});

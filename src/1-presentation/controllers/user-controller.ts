@@ -25,7 +25,7 @@ export class UserController implements IUserController {
 				return res.status(404).send({ message: 'User not found' });
 			}
 
-			const usersVM = users.map(u => new UserVM(u.id, u.username, u.name, u.email));
+			const usersVM = users.map(u => new UserVM(u.id, u.username, u.name, u.email, u.role));
 			
 			return res.status(200).json(usersVM);
 
@@ -46,7 +46,7 @@ export class UserController implements IUserController {
 				return res.status(404).send({ message: 'User not found' });
 			}
 
-			const userVM = new UserVM(user.id, user.username, user.name, user.email);
+			const userVM = new UserVM(user.id, user.username, user.name, user.email, user.role);
 
 			return res.status(200).json(userVM);
 

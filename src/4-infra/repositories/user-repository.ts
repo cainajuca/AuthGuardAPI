@@ -8,17 +8,17 @@ export class UserRepository implements IUserRepository {
 	async findAllUsers(): Promise<User[]> {
 		const usersDoc = await UserModel.find().exec();
 
-		return usersDoc.map(doc => new User(doc._id.toString(), doc.username, doc.name, doc.email, doc.password));
+		return usersDoc.map(doc => new User(doc._id.toString(), doc.username, doc.name, doc.email, doc.password, doc.role));
 	}
 	
 	async findById(id: string): Promise<User | null> {
 		const userDoc = await UserModel.findById(id).exec();
-		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password) : null;
+		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role) : null;
 	}
 
 	async findByUsername(username: string): Promise<User | null> {
 		const userDoc = await UserModel.findOne({ username }).exec();
-		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password) : null;
+		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role) : null;
 	}
 
 	async save(user: User): Promise<void> {
@@ -28,6 +28,7 @@ export class UserRepository implements IUserRepository {
 			name: user.name,
 			email: user.email,
 			password: user.password,
+			role: 'user',
 		});
 
 		await userDoc.save();

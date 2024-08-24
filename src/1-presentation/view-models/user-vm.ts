@@ -3,6 +3,7 @@ export class UserVM {
 		public id: string,
 		public username: string,
 		public name: string,
-		public email: string
+		public email: string,
+		public role: string,
 	) {}
 }

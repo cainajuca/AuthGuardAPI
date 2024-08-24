@@ -1,17 +1,13 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import '@shared/config/env';
 
 import http from 'http';
+
 import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-import router from '@presentation/routes'
-
-
-
 import mongoose from 'mongoose';
+
+import router from '@presentation/routes'
 
 const main = async () => {
 
@@ -19,8 +15,7 @@ const main = async () => {
 
 	app.use(cors({ credentials: true }))
 	app.use(compression());
-	app.use(cookieParser());
-	app.use(bodyParser.json());
+	app.use(express.json());
 
 	const server = http.createServer(app);
 
@@ -29,9 +24,9 @@ const main = async () => {
 	});
 
 	mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING).then()
-	.catch(err => {
-		console.error('Failed to connect to MongoDB', err);
-	});
+		.catch(err => {
+			console.error('Failed to connect to MongoDB', err);
+		});
 		
 	app.use('/', router());
 }

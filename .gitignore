@@ -4,6 +4,7 @@ node_modules/
 # Diretórios de build
 dist/
 build/
+.vs/
 
 # Arquivos de ambiente
 .env

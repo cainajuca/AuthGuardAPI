@@ -9,7 +9,9 @@
 		"lint": "eslint . --fix",
 		"build": "tsc && tsc-alias",
 		"start:dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
-		"start:prod": "node dist/index.js"
+		"start:prod": "node dist/index.js",
+		"stop:linux": "sudo lsof -t -i :8080 | xargs sudo kill -9",
+		"restart:linux": "npm run stop:linux && npm run start:prod"
 	},
 	"dependencies": {
 		"@types/bcrypt": "^5.0.2",

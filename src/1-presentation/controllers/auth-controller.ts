@@ -8,6 +8,7 @@ import { SignUpUseCase } from '@application/use-cases/sign-up-use-case/sign-up-u
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case/sign-up-use-case.dto';
 import { OutputVM } from '@application/dtos/output-vm';
+import { UserDTO } from '@application/use-cases/user-dto';
 
 export class AuthController implements IAuthController {
 	constructor(
@@ -54,15 +55,8 @@ export class AuthController implements IAuthController {
 				role: user.role,
 			});
 
-			const output = {
-				user: {
-					id: user.id,
-					username: user.username,
-					email: user.email,
-					role: user.role
-				},
-				token 
-			};
+			const userVM = new UserDTO(user.id, user.name, user.username, user.email, user.role);
+			const output = { userVM, token };
 
 			return res.status(200).send(new OutputVM(200, output, []));
 

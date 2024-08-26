@@ -28,7 +28,7 @@ export class SignUpUseCaseOutput {
     public token: string;
 
 	constructor(user: User, token: string) {
-		this.user = new UserDTO(user.id, user.username, user.name);
+		this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role);
         this.token = token;
 	}
 }

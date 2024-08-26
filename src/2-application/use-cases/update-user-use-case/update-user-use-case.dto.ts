@@ -30,6 +30,6 @@ export class UpdateUserUseCaseOutput {
 	public user: UserDTO;
 
 	constructor(user: User) {
-		this.user = new UserDTO(user.id, user.username, user.name);
+		this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role);
 	}
 }

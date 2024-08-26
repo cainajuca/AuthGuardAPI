@@ -8,18 +8,18 @@ import { IUserRepository } from '@domain/repositories/user-repository.interface'
 import { User } from '@domain/entities/user';
 import { hashPassword } from '@shared/utils/bcrypt'
 import { generateToken } from '@shared/utils/jwt'
-
+import { OutputVM } from '@application/dtos/output-vm';
 
 export class SignUpUseCase implements ISignUpUseCase {
 	
 	constructor(private readonly userRepository: IUserRepository) {}
 
-	async handleSignUp(input: SignUpUseCaseInput): Promise<SignUpUseCaseOutput | null> {
+	async handleSignUp(input: SignUpUseCaseInput): Promise<OutputVM<SignUpUseCaseOutput>> {
 
 		const existingUser = await this.userRepository.findByUsername(input.username);
 
 		if(existingUser) {
-			throw new Error('User already exists.');
+			return new OutputVM<SignUpUseCaseOutput>(400, null, ['User already exists.']);
 		}
 
 		const passwordHash = await hashPassword(input.password);
@@ -41,6 +41,8 @@ export class SignUpUseCase implements ISignUpUseCase {
 			role: user.role,
 		});
 
-		return new SignUpUseCaseOutput(user, token)
+		const output = new SignUpUseCaseOutput(user, token);
+
+		return new OutputVM<SignUpUseCaseOutput>(201, output, []);
 	}
 }

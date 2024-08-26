@@ -24,14 +24,11 @@ export class SignUpUseCaseInput
 }
 
 export class SignUpUseCaseOutput {
-	public valid: boolean = false;
-	public user: UserDTO;
-	public token: string;
+    public user: UserDTO;
+    public token: string;
 
 	constructor(user: User, token: string) {
-		this.valid = true;
 		this.user = new UserDTO(user.id, user.username, user.name);
-		this.token = token;
+        this.token = token;
 	}
 }
-

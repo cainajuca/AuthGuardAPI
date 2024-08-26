@@ -7,6 +7,7 @@ import { verifyPassword } from '@shared/utils/bcrypt';
 import { SignUpUseCase } from '@application/use-cases/sign-up-use-case/sign-up-use-case';
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case/sign-up-use-case.dto';
+import { OutputVM } from '@application/dtos/output-vm';
 
 export class AuthController implements IAuthController {
 	constructor(
@@ -19,15 +20,15 @@ export class AuthController implements IAuthController {
 			const input: SignUpUseCaseInput = req.body;
 			const output = await this.signUpUseCase.handleSignUp(input);
 			
-			if(!output) {
-				return res.status(400).json({ message: 'User already exists' });
+			if(!output || !output.valid) {
+				return res.status(400).send(new OutputVM(400, null, ['User already exists']));
 			}
 
-			return res.status(201).send(output);
+			return res.status(output.statusCode).send(output);
 
-		  } catch (error) {
-			return res.status(400).send({ message: error.message });
-		  }
+		} catch (error) {
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
+		}
 	}
 
 	async login(req: Request, res: Response): Promise<Response> {
@@ -35,17 +36,17 @@ export class AuthController implements IAuthController {
 			const { username, password } = req.body;
 
 			if(!username || !password)
-				return res.status(400).json('Credentials are not in the correct format');
+				return res.status(400).send(new OutputVM(400, null, ['Credentials are not in the correct format']));
 
 			const user = await this.userRepository.findByUsername(username);
 
 			if(!user)
-				return res.status(400).json('User does not exist');
+				return res.status(400).send(new OutputVM(400, null, ['User does not exist']));
 
 			const isPasswordValid = await verifyPassword(password, user.password);
 			
 			if (!isPasswordValid)
-				return res.status(401).send('Invalid username or password');
+				return res.status(400).send(new OutputVM(400, null, ['Invalid username or password']));
 
 			const token = generateToken({
 				_id: user.id.toString(),
@@ -53,7 +54,7 @@ export class AuthController implements IAuthController {
 				role: user.role,
 			});
 
-			return res.status(200).json({
+			const output = {
 				user: {
 					id: user.id,
 					username: user.username,
@@ -61,10 +62,12 @@ export class AuthController implements IAuthController {
 					role: user.role
 				},
 				token 
-			});
+			};
+
+			return res.status(200).send(new OutputVM(200, output, []));
 
 		} catch (error) {
-			return res.status(400).send({ message: error.message });
+			return res.status(400).send(new OutputVM(200, null, [error.message]));
 		}
 	}
 }

@@ -8,6 +8,7 @@ import { IUserRepository } from '@domain/repositories/user-repository.interface'
 import { UpdateUserUseCaseInput } from "@application/use-cases/update-user-use-case/update-user-use-case.dto";
 import { IDeleteUserUseCase, IUpdateUserUseCase } from "@application/use-cases/protocols";
 import { DeleteUserUseCaseInput } from "@application/use-cases/delete-user-use-case/delete-user-use-case.dto";
+import { OutputVM } from "@application/dtos/output-vm";
 
 export class UserController implements IUserController {
 	
@@ -21,17 +22,15 @@ export class UserController implements IUserController {
 			
 			const users = await this.userRepository.findAllUsers();
 
-			if (!users) {
-				return res.status(404).send({ message: 'User not found' });
-			}
+			if (!users)
+				return res.status(404).send(new OutputVM(404, null, ['User not found']));
 
 			const usersVM = users.map(u => new UserVM(u.id, u.username, u.name, u.email, u.role));
 			
-			return res.status(200).json(usersVM);
+			return res.status(200).send(new OutputVM(200, usersVM, []));
 
 		} catch (error) {
-			console.log(error);
-			return res.status(400).send({ message: error.message });
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 
@@ -42,17 +41,15 @@ export class UserController implements IUserController {
 
 			const user = await this.userRepository.findById(id);
 
-			if (!user) {
-				return res.status(404).send({ message: 'User not found' });
-			}
+			if (!user)
+				return res.status(404).send(new OutputVM(404, null, ['User not found']));
 
 			const userVM = new UserVM(user.id, user.username, user.name, user.email, user.role);
 
-			return res.status(200).json(userVM);
+			return res.status(200).send(new OutputVM(200, userVM, []));
 
 		} catch (error) {
-			console.log(error);
-			return res.status(400).send({ message: error.message });
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 
@@ -61,10 +58,10 @@ export class UserController implements IUserController {
 			const input: UpdateUserUseCaseInput = req.body;
 			const output = await this.updateUserUseCase.handleUpdateUser(input);
 
-			return res.status(200).send(output);
+			return res.status(output.statusCode).send(output);
 
 		} catch (error) {
-			return res.status(400).send({ message: error.message });
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 
@@ -76,10 +73,10 @@ export class UserController implements IUserController {
 
 			const output = await this.deleteUserUseCase.handleDeleteUser(input);
 
-			return res.status(200).send(output);
+			return res.status(output.statusCode).send(output);
 
 		} catch (error) {
-			return res.status(400).send({ message: error.message });
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 }

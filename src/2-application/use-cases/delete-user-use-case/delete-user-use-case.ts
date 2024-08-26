@@ -1,3 +1,4 @@
+import { OutputVM } from '@root/2-application/dtos/output-vm';
 import { IDeleteUserUseCase } from '../protocols';
 
 import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from './delete-user-use-case.dto'
@@ -8,16 +9,18 @@ export class DeleteUserUseCase implements IDeleteUserUseCase {
 
 	constructor(private readonly userRepository: IUserRepository) { }
 
-	async handleDeleteUser(input: DeleteUserUseCaseInput): Promise<DeleteUserUseCaseOutput | null> {
+	async handleDeleteUser(input: DeleteUserUseCaseInput): Promise<OutputVM<DeleteUserUseCaseOutput>> {
 
 		const user = await this.userRepository.findById(input.id);
 
 		if(!user) {
-			throw new Error('User does not exist.');
+			return new OutputVM<DeleteUserUseCaseOutput>(400, null, ['User does not exist.']);
 		}
 
 		await this.userRepository.delete(user.id);
 
-		return new DeleteUserUseCaseOutput(user)
+		const output = new DeleteUserUseCaseOutput(user);
+
+		return new OutputVM<DeleteUserUseCaseOutput>(200, output, [])
 	}
 }

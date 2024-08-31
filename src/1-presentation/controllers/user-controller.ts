@@ -53,6 +53,25 @@ export class UserController implements IUserController {
 		}
 	}
 
+	async getUserByUsername(req: Request, res: Response): Promise<Response> {
+		try {
+			
+			const { username } = req.params;
+
+			const user = await this.userRepository.findByUsername(username);
+
+			if (!user)
+				return res.status(404).send(new OutputVM(404, null, ['User not found']));
+
+			const userVM = new UserVM(user.id, user.username, user.name, user.email, user.role);
+
+			return res.status(200).send(new OutputVM(200, userVM, []));
+
+		} catch (error) {
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
+		}
+	}
+
 	async updateUser(req: Request, res: Response): Promise<Response> {
 		try {
 			const input: UpdateUserUseCaseInput = req.body;

@@ -1,31 +1,52 @@
 import '@shared/config/env';
 
-import http from 'http';
-
-import express from 'express';
+import express, { NextFunction } from 'express';
 import compression from 'compression';
 import cors from 'cors';
+import serverless from 'serverless-http';
+import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 
 import { connectToDatabase } from '@infra/database/context';
 import router from '@presentation/routes';
 
-const main = async () => {
+let dbConnectionInitialized = false;
 
-	const app = express();
+const app = express();
 
-	app.use(cors({ credentials: true }))
-	app.use(compression());
-	app.use(express.json());
+app.use(cors({ credentials: true }));
+app.use(compression());
+app.use(express.json());
 
-	const server = http.createServer(app);
+app.use(async (next: NextFunction) => {
 
-	server.listen(process.env.API_PORT, () => {
-		console.log(`Server running on ${process.env.API_URL}`);
-	});
+    // ensure database connection
+    if (!dbConnectionInitialized) {
+        await connectToDatabase();
+        dbConnectionInitialized = true;
+    }
+    
+    next();
+});
 
-	await connectToDatabase();
-		
-	app.use('/', router());
-}
+app.use('/', router());
 
-main();
+const serverlessHandler = serverless(app);
+
+export const handler: APIGatewayProxyHandler = async (event, context) => {
+    if (process.env.DEBUG) {
+        console.log({
+            message: 'Received event',
+            data: JSON.stringify(event),
+        });
+    }
+
+    const result = (await serverlessHandler(event, context)) as APIGatewayProxyResult;
+
+    return {
+        statusCode: result.statusCode || 200,
+        body: result.body || '',
+        headers: result.headers,
+        isBase64Encoded: result.isBase64Encoded || false
+    };
+};
+  

@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-
 import { AuthenticatedRequest } from '.';
-
-import { JwtPayload, secretKey } from '@shared/utils/jwt'
+import { verifyToken } from '@shared/utils/jwt'
 
 export const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
 	const bearerToken = req.headers.authorization?.split(' ')[1];
@@ -13,7 +10,7 @@ export const authenticateJWT = (req: AuthenticatedRequest, res: Response, next: 
 	}
 
 	try {
-		const decoded = jwt.verify(bearerToken, secretKey) as JwtPayload;
+		const decoded = verifyToken(bearerToken);
 
 		req.userId = decoded._id;
 

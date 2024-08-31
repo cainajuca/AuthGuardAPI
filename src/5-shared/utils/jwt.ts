@@ -15,3 +15,13 @@ export function generateToken(payload: JwtPayload): string {
 export function verifyToken(token: string): JwtPayload {
 	return jwt.verify(token, secretKey) as JwtPayload;
 }
+
+export function checkAdmin(token: string): boolean {
+	try {
+		const decoded = verifyToken(token) as { role: string };
+		
+		return decoded.role === 'admin';
+	} catch (error) {
+		return false;
+	}
+};

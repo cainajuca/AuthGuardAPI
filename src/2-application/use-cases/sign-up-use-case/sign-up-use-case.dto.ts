@@ -7,9 +7,6 @@ import { User } from '@domain/entities/user';
 export class SignUpUseCaseInput
 {
     @IsNotEmpty()
-	public id: string;
-
-    @IsNotEmpty()
     public username: string;
     
     @IsNotEmpty()

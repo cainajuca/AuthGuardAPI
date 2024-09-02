@@ -22,7 +22,7 @@ export class AuthController implements IAuthController {
 			const output = await this.signUpUseCase.handleSignUp(input);
 			
 			if(!output || !output.valid) {
-				return res.status(400).send(new OutputVM(400, null, ['User already exists']));
+				return res.status(400).send(output);
 			}
 
 			return res.status(output.statusCode).send(output);

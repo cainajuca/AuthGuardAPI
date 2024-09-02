@@ -21,6 +21,9 @@ export class SignUpUseCaseInput
     
     @IsNotEmpty()
     public password: string;
+    
+    @IsNotEmpty()
+    public confirmPassword: string;
 }
 
 export class SignUpUseCaseOutput {

@@ -16,11 +16,13 @@ export class SignUpUseCase implements ISignUpUseCase {
 
 	async handleSignUp(input: SignUpUseCaseInput): Promise<OutputVM<SignUpUseCaseOutput>> {
 
+		if(input.password != input.confirmPassword)
+			return new OutputVM<SignUpUseCaseOutput>(400, null, ['Please ensure password and confirm password are matching']);
+
 		const existingUser = await this.userRepository.findByUsername(input.username);
 
-		if(existingUser) {
+		if(existingUser)
 			return new OutputVM<SignUpUseCaseOutput>(400, null, ['User already exists.']);
-		}
 
 		const passwordHash = await hashPassword(input.password);
 		

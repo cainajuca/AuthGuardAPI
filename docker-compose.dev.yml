@@ -1,0 +1,27 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      NODE_ENV: development
+      REDIS_URL: redis://redis:6379
+      CHOKIDAR_USEPOLLING: "true" # Nodemon uses polling to detect file changes from the host system, necessary in Docker environments
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    command: yarn start:dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+  
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis
+    ports:
+      - 6379:6379

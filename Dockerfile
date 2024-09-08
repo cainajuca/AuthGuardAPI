@@ -1,3 +1,6 @@
+# docker compose -f docker-compose.env.yml up -d
+# docker compose -f docker-compose.env.yml down
+
 # Node base image
 FROM node:20-alpine
 
@@ -18,6 +21,3 @@ RUN yarn build
 
 # Expose the application port
 EXPOSE 8080
-
-# Start the application
-CMD ["node", "dist/index.js"]

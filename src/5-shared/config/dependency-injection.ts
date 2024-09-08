@@ -5,24 +5,33 @@ import { DeleteUserUseCase } from '@application/use-cases/delete-user-use-case/d
 import { UserController } from '@presentation/controllers/user-controller';
 import { AuthController } from '@presentation/controllers/auth-controller';
 
-// repositories
-const userRepository = new UserRepository();
+import { RedisCacheService } from '@infra/Cache/redis-cache-service';
+import { createRedisClient } from '@infra/Cache/context';
 
-// use cases
-const signUpUseCase = new SignUpUseCase(userRepository);
-const updateUserUseCase = new UpdateUserUseCase(userRepository);
-const deleteUserUseCase = new DeleteUserUseCase(userRepository);
+export const initDependencies = async () => {
+	// repositories
+	const userRepository = new UserRepository();
 
-// controllers
-const authController = new AuthController(signUpUseCase, userRepository);
-const userController = new UserController(updateUserUseCase, deleteUserUseCase, userRepository);
+	// cache
+	const redisClient = await createRedisClient();
+	const cacheService = new RedisCacheService(redisClient);
 
-export {
-	userRepository,
+	// use cases
+	const signUpUseCase = new SignUpUseCase(userRepository);
+	const updateUserUseCase = new UpdateUserUseCase(userRepository);
+	const deleteUserUseCase = new DeleteUserUseCase(userRepository);
 
-	signUpUseCase,
-	updateUserUseCase,
+	// controllers
+	const authController = new AuthController(signUpUseCase, userRepository, cacheService);
+	const userController = new UserController(updateUserUseCase, deleteUserUseCase, userRepository, cacheService);
 
-	authController,
-	userController,
-};
+	return {
+		userRepository,
+
+		signUpUseCase,
+		updateUserUseCase,
+
+		authController,
+		userController,
+	};
+}

@@ -8,6 +8,7 @@ import cors from 'cors';
 
 import { connectToDatabase } from '@infra/database/context';
 import router from '@presentation/routes';
+import { initDependencies } from '@shared/config/dependency-injection';
 
 const main = async () => {
 
@@ -25,7 +26,9 @@ const main = async () => {
 
 	await connectToDatabase();
 		
-	app.use('/', router());
+	const dependencies = await initDependencies();
+
+	app.use('/', router(dependencies));
 }
 
 main();

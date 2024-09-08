@@ -9,11 +9,13 @@ import { IUserRepository } from '@domain/repositories/user-repository.interface'
 import { SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case/sign-up-use-case.dto';
 import { OutputVM } from '@application/dtos/output-vm';
 import { UserDTO } from '@application/use-cases/user-dto';
+import { CacheKeys, ICacheService } from '@domain/Cache/cache-service.interface';
 
 export class AuthController implements IAuthController {
 	constructor(
 		private readonly signUpUseCase: SignUpUseCase,
-		private readonly userRepository: IUserRepository
+		private readonly userRepository: IUserRepository,
+		private readonly cacheService: ICacheService
 	) { }
 
 	async signUp(req: Request, res: Response): Promise<Response> {
@@ -24,6 +26,8 @@ export class AuthController implements IAuthController {
 			if(!output || !output.valid) {
 				return res.status(400).send(output);
 			}
+
+			await this.cacheService.delete(CacheKeys.USER_LIST);
 
 			return res.status(output.statusCode).send(output);
 

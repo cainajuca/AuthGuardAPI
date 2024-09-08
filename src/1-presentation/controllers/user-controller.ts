@@ -9,18 +9,26 @@ import { UpdateUserUseCaseInput } from "@application/use-cases/update-user-use-c
 import { IDeleteUserUseCase, IUpdateUserUseCase } from "@application/use-cases/protocols";
 import { DeleteUserUseCaseInput } from "@application/use-cases/delete-user-use-case/delete-user-use-case.dto";
 import { OutputVM } from "@application/dtos/output-vm";
+import { ICacheService, CacheKeys } from '@domain/Cache/cache-service.interface';
+import { User } from "@domain/entities/user";
 
 export class UserController implements IUserController {
 	
 	constructor(
 		private readonly updateUserUseCase: IUpdateUserUseCase,
 		private readonly deleteUserUseCase: IDeleteUserUseCase,
-		private readonly userRepository: IUserRepository) { }
+		private readonly userRepository: IUserRepository,
+		private readonly cacheService: ICacheService) { }
 
 	async getAllUsers(req: Request, res: Response): Promise<Response> {
 		try {
-			
-			const users = await this.userRepository.findAllUsers();
+			const cacheKey = CacheKeys.USER_LIST;
+			let users = await this.cacheService.get(cacheKey) as User[];
+
+			if (!users) {
+				users = await this.userRepository.findAllUsers();
+				await this.cacheService.set(cacheKey, users); // no TTL
+			}
 
 			if (!users)
 				return res.status(404).send(new OutputVM(404, null, ['User not found']));
@@ -36,7 +44,6 @@ export class UserController implements IUserController {
 
 	async getUserById(req: Request, res: Response): Promise<Response> {
 		try {
-			
 			const { id } = req.params;
 
 			const user = await this.userRepository.findById(id);
@@ -77,6 +84,10 @@ export class UserController implements IUserController {
 			const input: UpdateUserUseCaseInput = req.body;
 			const output = await this.updateUserUseCase.handleUpdateUser(input);
 
+			if (output.valid) {
+				await this.cacheService.delete(CacheKeys.USER_LIST);
+			}
+
 			return res.status(output.statusCode).send(output);
 
 		} catch (error) {
@@ -91,6 +102,10 @@ export class UserController implements IUserController {
 			const input: DeleteUserUseCaseInput = { id };
 
 			const output = await this.deleteUserUseCase.handleDeleteUser(input);
+
+			if (output.valid) {
+				await this.cacheService.delete(CacheKeys.USER_LIST);
+			}
 
 			return res.status(output.statusCode).send(output);
 

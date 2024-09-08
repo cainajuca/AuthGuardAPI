@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export interface IUserController {
+interface IUserController {
     getAllUsers(req: Request, res: Response): Promise<Response>;
     getUserById(req: Request, res: Response): Promise<Response>;
     getUserByUsername(req: Request, res: Response): Promise<Response>;
@@ -8,7 +8,12 @@ export interface IUserController {
     deleteUser(req: Request, res: Response): Promise<Response>;
 }
 
-export interface IAuthController {
+interface IAuthController {
     signUp(req: Request, res: Response): Promise<Response>;
     login(req: Request, res: Response): Promise<Response>;
+}
+
+export {
+    IUserController,
+    IAuthController,
 }

@@ -5,9 +5,9 @@ import users from './user';
 
 const router = express.Router();
 
-export default (): express.Router => {
-	authentication(router);
-	users(router);
+export default (dependencies: any): express.Router => {
+	authentication(router, dependencies.authController);
+	users(router, dependencies.userController);
 
 	return router;
 }

@@ -4,9 +4,18 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - 8080:8080
     environment:
       NODE_ENV: development
+      REDIS_URL: redis://redis:6379
     env_file:
       - .env
+    depends_on:
+      - redis
     command: yarn start:prod
+  
+  redis:
+    image: redis:7.0-alpine
+    container_name: redis
+    ports:
+      - 6379:6379

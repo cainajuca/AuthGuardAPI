@@ -1,5 +1,5 @@
-# docker compose -f docker-compose.env.yml up -d
-# docker compose -f docker-compose.env.yml down
+# docker compose -f docker-compose.dev.yml up --build
+# docker compose -f docker-compose.dev.yml down
 
 # Node base image
 FROM node:20-alpine

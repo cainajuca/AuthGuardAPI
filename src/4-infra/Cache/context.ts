@@ -10,11 +10,11 @@ export const createRedisClient = async (): Promise<RedisClientType> => {
             });
     
             await redisClient.connect();
-            console.log('Redis client connected.'); // remove when completed
+            console.log('Redis client connected.');
         }
     
         return redisClient;
     } catch (error) {
-        console.log('No caching available.'); // remove when completed
+        console.log('No caching available.');
     }
 };

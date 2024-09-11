@@ -2,8 +2,10 @@ import { Request } from 'express';
 
 export * from './authentication';
 export * from './authorization';
+export * from './refresh-token';
 
 export interface AuthenticatedRequest extends Request {
     userId?: string;
-    // maybe add name or username in here
+    username?: string;
+    role?: string;
 }

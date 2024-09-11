@@ -11,6 +11,7 @@ interface IUserController {
 interface IAuthController {
     signUp(req: Request, res: Response): Promise<Response>;
     login(req: Request, res: Response): Promise<Response>;
+    refresh(req: Request, res: Response): Promise<Response>;
 }
 
 export {

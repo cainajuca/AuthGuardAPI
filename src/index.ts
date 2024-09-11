@@ -5,6 +5,7 @@ import http from 'http';
 import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import { connectToDatabase } from '@infra/database/context';
 import router from '@presentation/routes';
@@ -17,6 +18,7 @@ const main = async () => {
 	app.use(cors({ credentials: true }))
 	app.use(compression());
 	app.use(express.json());
+	app.use(cookieParser());
 
 	const server = http.createServer(app);
 

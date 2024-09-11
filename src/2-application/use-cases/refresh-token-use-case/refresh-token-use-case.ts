@@ -22,7 +22,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
             role: input.role,
         });
         
-        await this.refreshTokenRepository.delete(input.refreshToken);
+        await this.refreshTokenRepository.deleteByToken(input.refreshToken);
         
         const refreshTokenEntity = new RefreshToken(refreshToken, input.userId, refreshTokenExpiresAt, new Date());
         await this.refreshTokenRepository.save(refreshTokenEntity);

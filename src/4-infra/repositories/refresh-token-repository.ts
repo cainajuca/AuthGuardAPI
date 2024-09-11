@@ -37,7 +37,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
         );
     }
     
-    async delete(token: string): Promise<void> {
+    async deleteByToken(token: string): Promise<void> {
         await RefreshTokenModel.findOneAndDelete({ token }).exec();
     }
 }

@@ -133,11 +133,32 @@ export class AuthController implements IAuthController {
 				// sameSite: 'strict', // Cross-Site Request Forgery protection
 			});
 
-			return res.json(new OutputVM(201, { accessToken: output.accessToken }, []));
+			return res.status(201).send(new OutputVM(201, { accessToken: output.accessToken }, []));
 		} catch (error) {
 			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
+
+	async logout(req: Request, res: Response): Promise<Response> {
+
+		const { refreshToken } = req.cookies;
+
+		if (!refreshToken) {
+			return res.status(400).send(new OutputVM(400, null, ['Refresh token not provided.']));
+		}
+
+		try {
+			await this.refreshTokenRepository.deleteByToken(refreshToken);
+
+			res.clearCookie('refreshToken', {
+				httpOnly: true,
+				// secure: true, // only for HTTPS
+				// sameSite: 'strict', // Cross-Site Request Forgery protection
+			});
+
+			return res.status(200).send(new OutputVM(200, { message: 'Logged out successfully.' }, []));
+		} catch (error) {
+			return res.status(500).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 }

@@ -49,6 +49,6 @@ export class SignUpUseCase implements ISignUpUseCase {
 		const tokenEntity = new RefreshToken(refreshToken, user.id, refreshTokenExpiresAt, new Date());
 		await this.refreshTokenRepository.save(tokenEntity);
 
-		return new SignUpUseCaseOutput(true, existingUser, accessToken, refreshToken, '');
+		return new SignUpUseCaseOutput(true, user, accessToken, refreshToken);
 	}
 }

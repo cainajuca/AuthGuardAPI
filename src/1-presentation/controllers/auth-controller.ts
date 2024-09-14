@@ -3,18 +3,17 @@ import { Request, Response } from 'express';
 import { IAuthController } from './protocols';
 
 import { generateAccessRefreshTokens } from '@shared/utils/jwt';
+import { AuthenticatedRequest } from '../middlewares';
 import { verifyPassword } from '@shared/utils/bcrypt';
-import { SignUpUseCase } from '@application/use-cases/sign-up-use-case/sign-up-use-case';
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
-import { SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case/sign-up-use-case.dto';
 import { OutputVM } from '@application/dtos/output-vm';
 import { UserDTO } from '@application/use-cases/user-dto';
 import { CacheKeys, ICacheService } from '@domain/Cache/cache-service.interface';
 import { IRefreshTokenRepository } from '@domain/repositories/refresh-token-repository.interface';
 import { RefreshToken } from '@domain/entities/refresh-token';
-import { RefreshTokenUseCase } from '@application/use-cases/refresh-token-use-case/refresh-token-use-case';
-import { RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case/refresh-token-use-case.dto';
-import { AuthenticatedRequest } from '../middlewares';
+
+import { SignUpUseCase, SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case';
+import { RefreshTokenUseCase, RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case';
 
 export class AuthController implements IAuthController {
 	constructor(

@@ -49,7 +49,7 @@ export class AuthController implements IAuthController {
 				accessToken: result.accessToken,
 			}
 
-			return res.status(201).send(new OutputVM(400, output, [result.error]));
+			return res.status(201).send(new OutputVM(201, output, []));
 
 		} catch (error) {
 			return res.status(400).send(new OutputVM(400, null, [error.message]));

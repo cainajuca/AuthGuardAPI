@@ -3,6 +3,8 @@ import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from "./delete-user-u
 import { SignUpUseCaseInput, SignUpUseCaseOutput } from "./sign-up-use-case";
 import { UpdateUserUseCaseInput, UpdateUserUseCaseOutput } from "./update-user-use-case";
 import { RefreshTokenUseCaseInput, RefreshTokenUseCaseOutput } from "./refresh-token-use-case";
+import { RequestPasswordResetUseCaseInput, RequestPasswordResetUseCaseOutput } from "./request-password-reset-use-case";
+import { ResetPasswordUseCaseInput, ResetPasswordUseCaseOutput } from "./reset-password-use-case";
 
 export interface ISignUpUseCase {
     handleSignUp(input: SignUpUseCaseInput): Promise<SignUpUseCaseOutput>;
@@ -18,4 +20,12 @@ export interface IDeleteUserUseCase {
 
 export interface IRefreshTokenUseCase {
     handleRefreshToken(input: RefreshTokenUseCaseInput): Promise<RefreshTokenUseCaseOutput>;
+}
+
+export interface IRequestPasswordResetUseCase {
+    handleRequestPasswordReset(input: RequestPasswordResetUseCaseInput): Promise<RequestPasswordResetUseCaseOutput>;
+}
+
+export interface IResetPasswordUseCase {
+    handleResetPassword(input: ResetPasswordUseCaseInput): Promise<ResetPasswordUseCaseOutput>;
 }

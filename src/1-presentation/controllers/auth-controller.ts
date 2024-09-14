@@ -14,11 +14,15 @@ import { RefreshToken } from '@domain/entities/refresh-token';
 
 import { SignUpUseCase, SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case';
 import { RefreshTokenUseCase, RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case';
+import { RequestPasswordResetUseCase, RequestPasswordResetUseCaseInput } from '@application/use-cases/request-password-reset-use-case';
+import { ResetPasswordUseCase, ResetPasswordUseCaseInput } from '@application/use-cases/reset-password-use-case';
 
 export class AuthController implements IAuthController {
 	constructor(
 		private readonly signUpUseCase: SignUpUseCase,
 		private readonly refreshTokenUseCase: RefreshTokenUseCase,
+		private readonly requestPasswordResetUseCase: RequestPasswordResetUseCase,
+		private readonly resetPasswordUseCase: ResetPasswordUseCase,
 		private readonly userRepository: IUserRepository,
 		private readonly refreshTokenRepository: IRefreshTokenRepository,
 		private readonly cacheService: ICacheService
@@ -158,6 +162,46 @@ export class AuthController implements IAuthController {
 			return res.status(200).send(new OutputVM(200, { message: 'Logged out successfully.' }, []));
 		} catch (error) {
 			return res.status(500).send(new OutputVM(400, null, [error.message]));
+		}
+	}
+	
+	async requestPasswordReset(req: Request, res: Response): Promise<Response> {
+		try {
+			const input: RequestPasswordResetUseCaseInput = req.body;
+			const result = await this.requestPasswordResetUseCase.handleRequestPasswordReset(input);
+			
+			if(!result || !result.valid) {
+				return res.status(400).send(new OutputVM(400, null, [result.error]));
+			}
+
+			const output = {
+				message: "We've sent a password reset link to your e-mail. Please check your inbox and follow the instructions to reset your password within the next hour",
+			}
+			
+			return res.status(200).send(new OutputVM(200, output, []));
+
+		} catch (error) {
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
+		}
+	}
+
+	async resetPassword(req: Request, res: Response): Promise<Response> {
+		try {
+			const input: ResetPasswordUseCaseInput = req.body;
+			const result = await this.resetPasswordUseCase.handleResetPassword(input);
+			
+			if(!result || !result.valid) {
+				return res.status(400).send(new OutputVM(400, null, [result.error]));
+			}
+
+			const output = {
+				message: "Your password has been successfully reset",
+			}
+			
+			return res.status(200).send(new OutputVM(200, output, []));
+
+		} catch (error) {
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 }

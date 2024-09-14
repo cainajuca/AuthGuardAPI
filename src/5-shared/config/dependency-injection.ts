@@ -9,6 +9,8 @@ import { RedisCacheService } from '@infra/cache/redis-cache-service';
 import { createRedisClient } from '@infra/cache/context';
 import { RefreshTokenRepository } from '@infra/repositories/refresh-token-repository';
 import { RefreshTokenUseCase } from '@application/use-cases/refresh-token-use-case/refresh-token-use-case';
+import { RequestPasswordResetUseCase } from '@application/use-cases/request-password-reset-use-case';
+import { ResetPasswordUseCase } from '@application/use-cases/reset-password-use-case';
 
 export const initDependencies = async () => {
 	// repositories
@@ -24,19 +26,22 @@ export const initDependencies = async () => {
 	const updateUserUseCase = new UpdateUserUseCase(userRepository);
 	const deleteUserUseCase = new DeleteUserUseCase(userRepository);
 	const refreshTokenUseCase = new RefreshTokenUseCase(refreshTokenRepository);
+	const requestPasswordResetUseCase = new RequestPasswordResetUseCase(userRepository);
+	const resetPasswordUseCase = new ResetPasswordUseCase(userRepository);
 
 	// controllers
-	const authController = new AuthController(signUpUseCase, refreshTokenUseCase, userRepository, refreshTokenRepository, cacheService);
+	const authController = new AuthController(
+		signUpUseCase, 
+		refreshTokenUseCase,
+		requestPasswordResetUseCase,
+		resetPasswordUseCase,
+		userRepository,
+		refreshTokenRepository, 
+		cacheService);
+
 	const userController = new UserController(updateUserUseCase, deleteUserUseCase, userRepository, cacheService);
 
 	return {
-		userRepository,
-
-		signUpUseCase,
-		updateUserUseCase,
-		deleteUserUseCase,
-		refreshTokenUseCase,
-
 		authController,
 		userController,
 	};

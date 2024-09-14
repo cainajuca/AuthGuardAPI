@@ -21,21 +21,22 @@ export function checkAdmin(token: string): boolean {
 
 export function generateAccessRefreshTokens(payload: JwtPayload): TokenPair {
 
-	const accessToken = generateAccessToken(payload);
-	const refreshToken = generateRefreshToken(payload);
+	const accessToken = generateToken(payload, accessTokenExpiry);
+	const refreshToken = generateToken(payload, refreshTokenExpiry);
 
-	const refreshTokenExpiresAt = new Date();
-	refreshTokenExpiresAt.setTime(refreshTokenExpiresAt.getTime() + ms(refreshTokenExpiry));
+	const refreshTokenExpiresAt = GetExpirationDate(refreshTokenExpiry);
 
 	return new TokenPair(accessToken, refreshToken, refreshTokenExpiresAt);
 }
 
-function generateAccessToken(payload: JwtPayload): string {
-	return jwt.sign(payload, secretKey, { expiresIn: accessTokenExpiry });
+export function generateToken(payload: JwtPayload, tokenExpiry: string): string {
+	return jwt.sign(payload, secretKey, { expiresIn: tokenExpiry });
 }
 
-function generateRefreshToken(payload: JwtPayload): string {
-	return jwt.sign(payload, secretKey, { expiresIn: refreshTokenExpiry });
+export function GetExpirationDate(expiry: string) {
+	const refreshTokenExpiresAt = new Date();
+	refreshTokenExpiresAt.setTime(refreshTokenExpiresAt.getTime() + ms(expiry));
+	return refreshTokenExpiresAt;
 }
 
 export interface JwtPayload {

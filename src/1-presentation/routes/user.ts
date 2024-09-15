@@ -5,6 +5,7 @@ import { IUserController } from '../controllers/protocols';
 
 export default (router: Router, userController: IUserController) => {
 	router.get('/users', authenticateJWT, userController.getAllUsers.bind(userController));
+	router.get('/users/inactive', authenticateJWT, userController.getInactiveUsers.bind(userController));
 	router.get('/users/id/:id', authenticateJWT, userController.getUserById.bind(userController));
 	router.get('/users/username/:username', authenticateJWT, userController.getUserByUsername.bind(userController));
 	router.patch('/users/:id', authenticateJWT, authorizationJWT, userController.updateUser.bind(userController));

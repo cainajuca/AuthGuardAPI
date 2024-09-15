@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 interface IUserController {
     getAllUsers(req: Request, res: Response): Promise<Response>;
+    getInactiveUsers(req: Request, res: Response): Promise<Response>;
     getUserById(req: Request, res: Response): Promise<Response>;
     getUserByUsername(req: Request, res: Response): Promise<Response>;
     updateUser(req: Request, res: Response): Promise<Response>;

@@ -42,6 +42,20 @@ export class UserController implements IUserController {
 		}
 	}
 
+	async getInactiveUsers(req: Request, res: Response): Promise<Response> {
+		try {
+
+			const users = await this.userRepository.findAllUsers(false);
+
+			const usersVM = users.map(u => new UserVM(u.id, u.username, u.name, u.email, u.role));
+			
+			return res.status(200).send(new OutputVM(200, usersVM, []));
+
+		} catch (error) {
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
+		}
+	}
+
 	async getUserById(req: Request, res: Response): Promise<Response> {
 		try {
 			const { id } = req.params;

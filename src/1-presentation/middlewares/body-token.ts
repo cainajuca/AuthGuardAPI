@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from '.';
 
 import { verifyToken } from '@shared/utils/jwt';
 
-export const verifyResetToken  = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const verifyBodyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   
     const token = req.body.token;
   

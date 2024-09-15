@@ -31,7 +31,8 @@ async function seedAdmin() {
 			name: 'Administrador',
 			email: 'admin@example.com',
 			password: passwordHash,
-			role: 'admin'
+			role: 'admin',
+			isActive: true,
 		});
 
 		await newAdmin.save();

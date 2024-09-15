@@ -6,24 +6,29 @@ import { User } from '@domain/entities/user';
 export class UserRepository implements IUserRepository {
 	
 	async findAllUsers(): Promise<User[]> {
-		const usersDoc = await UserModel.find().exec();
+		const usersDoc = await UserModel.find();
 
-		return usersDoc.map(doc => new User(doc._id.toString(), doc.username, doc.name, doc.email, doc.password, doc.role));
+		return usersDoc.map(doc => new User(doc._id.toString(), doc.username, doc.name, doc.email, doc.password, doc.role, doc.isActive));
 	}
 	
 	async findById(id: string): Promise<User | null> {
-		const userDoc = await UserModel.findById(id).exec();
-		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role) : null;
+		const userDoc = await UserModel.findById(id);
+		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role, userDoc.isActive) : null;
 	}
 
 	async findByUsername(username: string): Promise<User | null> {
-		const userDoc = await UserModel.findOne({ username }).exec();
-		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role) : null;
+		const userDoc = await UserModel.findOne({ username });
+		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role, userDoc.isActive) : null;
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
-		const userDoc = await UserModel.findOne({ email }).exec();
-		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role) : null;
+		const userDoc = await UserModel.findOne({ email });
+		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role, userDoc.isActive) : null;
+	}
+
+	async findByActivationToken(activationToken: string): Promise<User | null> {
+		const userDoc = await UserModel.findOne({ activationToken });
+		return userDoc ? new User(userDoc.id, userDoc.username, userDoc.name, userDoc.email, userDoc.password, userDoc.role, userDoc.isActive) : null;
 	}
 
 	async save(user: User): Promise<void> {
@@ -34,16 +39,18 @@ export class UserRepository implements IUserRepository {
 			email: user.email,
 			password: user.password,
 			role: 'user',
+			activationToken: user.activationToken,
+			activationTokenExpiresAt: user.activationTokenExpiresAt,
 		});
 
 		await userDoc.save();
 	}
 
 	async update(user: User): Promise<void> {
-		await UserModel.findByIdAndUpdate(user.id, user).exec();
+		await UserModel.findByIdAndUpdate(user.id, user);
 	}
 
 	async delete(id: string): Promise<void> {
-		await UserModel.findByIdAndDelete(id).exec();
+		await UserModel.findByIdAndDelete(id);
 	}
 }

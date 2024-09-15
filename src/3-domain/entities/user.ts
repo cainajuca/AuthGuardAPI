@@ -6,8 +6,11 @@ export class User {
 		public email: string,
 		public password: string,
 		public role: string,
+		public isActive: boolean,
 		public resetToken?: string,
 		public resetTokenExpiresAt?: Date,
+		public activationToken?: string,
+		public activationTokenExpiresAt?: Date,
 	) {}
 }
   

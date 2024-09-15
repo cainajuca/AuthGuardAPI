@@ -6,8 +6,9 @@ import { IUserRepository } from '@domain/repositories/user-repository.interface'
 import { IRefreshTokenRepository } from '@domain/repositories/refresh-token-repository.interface';
 import { User } from '@domain/entities/user';
 import { hashPassword } from '@shared/utils/bcrypt'
-import { generateAccessRefreshTokens } from '@shared/utils/jwt';
+import { generateAccessRefreshTokens, generateActivationToken } from '@shared/utils/jwt';
 import { RefreshToken } from '@domain/entities/refresh-token';
+import { sendActivationEmail } from '@infra/email-sender/email-sender';
 
 export class SignUpUseCase implements ISignUpUseCase {
 	
@@ -33,6 +34,8 @@ export class SignUpUseCase implements ISignUpUseCase {
 			role: 'user',
 		};
 
+		const activationTokenPair = generateActivationToken(jwtPayload);
+
 		const passwordHash = await hashPassword(input.password);
 		
 		const user = new User(
@@ -42,6 +45,11 @@ export class SignUpUseCase implements ISignUpUseCase {
 			input.email,
 			passwordHash,
 			jwtPayload.role,
+			false, // not active
+			null, // resetToken
+			null, // resetTokenExpiresAt
+			activationTokenPair.token,
+			activationTokenPair.expiresAt,
 		);
 
 		await this.userRepository.save(user);
@@ -50,6 +58,8 @@ export class SignUpUseCase implements ISignUpUseCase {
 
 		const tokenEntity = new RefreshToken(refreshTokenPair.token, user.id, refreshTokenPair.expiresAt, new Date());
 		await this.refreshTokenRepository.save(tokenEntity);
+
+		sendActivationEmail(user.email, activationTokenPair.token, activationTokenPair.expiresAt);
 
 		return new SignUpUseCaseOutput(true, user, accessTokenPair.token, refreshTokenPair.token);
 	}

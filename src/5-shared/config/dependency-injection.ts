@@ -11,6 +11,7 @@ import { RefreshTokenRepository } from '@infra/repositories/refresh-token-reposi
 import { RefreshTokenUseCase } from '@application/use-cases/refresh-token-use-case/refresh-token-use-case';
 import { RequestPasswordResetUseCase } from '@application/use-cases/request-password-reset-use-case';
 import { ResetPasswordUseCase } from '@application/use-cases/reset-password-use-case';
+import { ActivateUserUseCase } from '@application/use-cases/activate-user-use-case';
 
 export const initDependencies = async () => {
 	// repositories
@@ -28,6 +29,7 @@ export const initDependencies = async () => {
 	const refreshTokenUseCase = new RefreshTokenUseCase(refreshTokenRepository);
 	const requestPasswordResetUseCase = new RequestPasswordResetUseCase(userRepository);
 	const resetPasswordUseCase = new ResetPasswordUseCase(userRepository);
+	const activateUserUseCase = new ActivateUserUseCase(userRepository);
 
 	// controllers
 	const authController = new AuthController(
@@ -35,6 +37,7 @@ export const initDependencies = async () => {
 		refreshTokenUseCase,
 		requestPasswordResetUseCase,
 		resetPasswordUseCase,
+		activateUserUseCase,
 		userRepository,
 		refreshTokenRepository, 
 		cacheService);

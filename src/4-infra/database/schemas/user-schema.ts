@@ -6,8 +6,11 @@ export interface UserDocument extends Document {
     email: string;
     password: string;
     role: string;
+    isActive: boolean;
     resetToken?: string;
     resetTokenExpiresAt?: Date;
+    activationToken?: string;
+    activationTokenExpiresAt?: Date;
 }
 
 const UserSchema: Schema = new Schema({
@@ -15,9 +18,12 @@ const UserSchema: Schema = new Schema({
 	name: { type: String, required: true },
 	email: { type: String, required: true, unique: true },
 	password: { type: String, required: true },
-	role: { type: String, default: 'user' },
+	role: { type: String, required: true, default: 'user' },
+    isActive: { type: Boolean, required: true, default: false },
     resetToken: { type: String },
     resetTokenExpiresAt: { type: Date },
+    activationToken: { type: String },
+    activationTokenExpiresAt: { type: Date },
 });
 
 export const UserModel = mongoose.model<UserDocument>('User', UserSchema);

@@ -29,3 +29,24 @@ export async function sendResetPasswordEmail(email: string, resetToken: string) 
 
 	transporter.sendMail(mailOptions);
 }
+
+export async function sendActivationEmail(email: string, activationToken: string, activationTokenExpiresAt: Date) {
+	
+	const activationUrl = `${process.env.ACTIVATION_URL}?token=${activationToken}`;
+
+	const transporter = nodemailer.createTransport(transportOptions);
+	
+	const mailOptions = {
+		from: process.env.API_EMAIL_USER,
+		to: email,
+		subject: 'Activate your account',
+		html: `
+			<p>Welcome! Click the link below to activate your account:</p>
+			<p><a href="${activationUrl}">Activate Account</a></p>
+			<p>This link will expire on <strong>${activationTokenExpiresAt.toLocaleString()}</strong>. Please activate your account before this date.</p>
+			<p>If you did not request this, please ignore this email.</p>
+		`,
+	};
+	
+	await transporter.sendMail(mailOptions);
+}

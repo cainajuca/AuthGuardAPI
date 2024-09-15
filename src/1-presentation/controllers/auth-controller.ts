@@ -16,6 +16,8 @@ import { SignUpUseCase, SignUpUseCaseInput } from '@application/use-cases/sign-u
 import { RefreshTokenUseCase, RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case';
 import { RequestPasswordResetUseCase, RequestPasswordResetUseCaseInput } from '@application/use-cases/request-password-reset-use-case';
 import { ResetPasswordUseCase, ResetPasswordUseCaseInput } from '@application/use-cases/reset-password-use-case';
+import { ActivateUserUseCase, ActivateUserUseCaseInput } from '@application/use-cases/activate-user-use-case';
+
 
 export class AuthController implements IAuthController {
 	constructor(
@@ -23,6 +25,7 @@ export class AuthController implements IAuthController {
 		private readonly refreshTokenUseCase: RefreshTokenUseCase,
 		private readonly requestPasswordResetUseCase: RequestPasswordResetUseCase,
 		private readonly resetPasswordUseCase: ResetPasswordUseCase,
+		private readonly activateUserUseCase: ActivateUserUseCase,
 		private readonly userRepository: IUserRepository,
 		private readonly refreshTokenRepository: IRefreshTokenRepository,
 		private readonly cacheService: ICacheService
@@ -200,6 +203,22 @@ export class AuthController implements IAuthController {
 			}
 			
 			return res.status(200).send(new OutputVM(200, output, []));
+
+		} catch (error) {
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
+		}
+	}
+
+	async activateUser(req: Request, res: Response): Promise<Response> {
+		try {
+			const input: ActivateUserUseCaseInput = req.body;
+			const output = await this.activateUserUseCase.handleActivateUser(input);
+
+			if (output.valid) {
+				await this.cacheService.delete(CacheKeys.USER_LIST);
+			}
+
+			return res.status(output.statusCode).send(output);
 
 		} catch (error) {
 			return res.status(400).send(new OutputVM(400, null, [error.message]));

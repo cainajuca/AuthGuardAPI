@@ -5,6 +5,7 @@ import { UpdateUserUseCaseInput, UpdateUserUseCaseOutput } from "./update-user-u
 import { RefreshTokenUseCaseInput, RefreshTokenUseCaseOutput } from "./refresh-token-use-case";
 import { RequestPasswordResetUseCaseInput, RequestPasswordResetUseCaseOutput } from "./request-password-reset-use-case";
 import { ResetPasswordUseCaseInput, ResetPasswordUseCaseOutput } from "./reset-password-use-case";
+import { ActivateUserUseCaseInput, ActivateUserUseCaseOutput } from "./activate-user-use-case";
 
 export interface ISignUpUseCase {
     handleSignUp(input: SignUpUseCaseInput): Promise<SignUpUseCaseOutput>;
@@ -28,4 +29,8 @@ export interface IRequestPasswordResetUseCase {
 
 export interface IResetPasswordUseCase {
     handleResetPassword(input: ResetPasswordUseCaseInput): Promise<ResetPasswordUseCaseOutput>;
+}
+
+export interface IActivateUserUseCase {
+    handleActivateUser(input: ActivateUserUseCaseInput): Promise<OutputVM<ActivateUserUseCaseOutput>>;
 }

@@ -15,6 +15,7 @@ interface IAuthController {
     logout(req: Request, res: Response): Promise<Response>;
     requestPasswordReset(req: Request, res: Response): Promise<Response>;
     resetPassword(req: Request, res: Response): Promise<Response>;
+    activateUser(req: Request, res: Response): Promise<Response>;
 }
 
 export {

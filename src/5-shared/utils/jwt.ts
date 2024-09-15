@@ -4,6 +4,7 @@ import ms from 'ms';
 export const secretKey = process.env.JWT_SECRET;
 export const accessTokenExpiry = process.env.ACCESS_TOKEN_EXPIRY;
 export const refreshTokenExpiry = process.env.REFRESH_TOKEN_EXPIRY;
+export const activationTokenExpiry = process.env.ACTIVATION_TOKEN_EXPIRY;
 
 export function verifyToken(token: string): JwtPayload {
 	return jwt.verify(token, secretKey) as JwtPayload;
@@ -25,6 +26,10 @@ export function generateAccessRefreshTokens(payload: JwtPayload): TokenPair[] {
 	const refreshTokenPair = generateToken(payload, refreshTokenExpiry);
 
 	return [accessTokenPair, refreshTokenPair];
+}
+
+export function generateActivationToken(payload: JwtPayload): TokenPair {
+	return generateToken(payload, activationTokenExpiry);
 }
 
 export function generateToken(payload: JwtPayload, tokenExpiry: string): TokenPair {

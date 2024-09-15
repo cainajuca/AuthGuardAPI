@@ -5,8 +5,8 @@ import { User } from '@domain/entities/user';
 
 export class UserRepository implements IUserRepository {
 	
-	async findAllUsers(): Promise<User[]> {
-		const usersDoc = await UserModel.find();
+	async findAllUsers(isActive? : boolean): Promise<User[]> {
+		const usersDoc = await UserModel.find({ isActive });
 
 		return usersDoc.map(doc => new User(doc._id.toString(), doc.username, doc.name, doc.email, doc.password, doc.role, doc.isActive));
 	}

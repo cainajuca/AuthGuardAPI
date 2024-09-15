@@ -26,7 +26,7 @@ export class UserController implements IUserController {
 			let users = await this.cacheService.get(cacheKey) as User[];
 
 			if (!users) {
-				users = await this.userRepository.findAllUsers();
+				users = await this.userRepository.findAllUsers(true);
 				await this.cacheService.set(cacheKey, users); // no TTL
 			}
 

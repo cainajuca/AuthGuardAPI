@@ -2,7 +2,7 @@ import { IRequestPasswordResetUseCase } from '../protocols';
 import { RequestPasswordResetUseCaseInput, RequestPasswordResetUseCaseOutput } from '.';
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { sendResetPasswordEmail } from '@infra/email-sender/email-sender';
-import { generateToken, GetExpirationDate } from '@shared/utils/jwt';
+import { generateToken } from '@shared/utils/jwt';
 
 export class RequestPasswordResetUseCase implements IRequestPasswordResetUseCase {
 
@@ -23,14 +23,14 @@ export class RequestPasswordResetUseCase implements IRequestPasswordResetUseCase
                 role: user.role,
             };
 
-            const token = generateToken(jwtPayload, '1h');
+            const tokenPair = generateToken(jwtPayload, '1h');
 
-            user.resetToken = token;
-            user.resetTokenExpiresAt = GetExpirationDate('1h');
+            user.resetToken = tokenPair.token;
+            user.resetTokenExpiresAt = tokenPair.expiresAt;
 
             await this.userRepository.update(user);
 
-            await sendResetPasswordEmail(user.email, token);
+            await sendResetPasswordEmail(user.email, tokenPair.token);
             
             return new RequestPasswordResetUseCaseOutput(true);
         } catch (error) {

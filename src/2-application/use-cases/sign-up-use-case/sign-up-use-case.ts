@@ -27,28 +27,30 @@ export class SignUpUseCase implements ISignUpUseCase {
 		if(existingUser)
 			return new SignUpUseCaseOutput(false, null, null, null, 'User already exists.');
 
+		const jwtPayload = {
+			_id: new ObjectId().toString(),
+			username: input.username,
+			role: 'user',
+		};
+
 		const passwordHash = await hashPassword(input.password);
 		
 		const user = new User(
-			new ObjectId().toString(), 
+			jwtPayload._id, 
 			input.username,
 			input.name,
 			input.email,
 			passwordHash,
-			'user'
+			jwtPayload.role,
 		);
 
 		await this.userRepository.save(user);
 
-		const { accessToken, refreshToken, refreshTokenExpiresAt } = generateAccessRefreshTokens({
-			_id: user.id,
-			username: user.username,
-			role: user.role,
-		});
+		const [ accessTokenPair, refreshTokenPair ] = generateAccessRefreshTokens(jwtPayload);
 
-		const tokenEntity = new RefreshToken(refreshToken, user.id, refreshTokenExpiresAt, new Date());
+		const tokenEntity = new RefreshToken(refreshTokenPair.token, user.id, refreshTokenPair.expiresAt, new Date());
 		await this.refreshTokenRepository.save(tokenEntity);
 
-		return new SignUpUseCaseOutput(true, user, accessToken, refreshToken);
+		return new SignUpUseCaseOutput(true, user, accessTokenPair.token, refreshTokenPair.token);
 	}
 }

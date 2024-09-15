@@ -19,24 +19,22 @@ export function checkAdmin(token: string): boolean {
 	}
 };
 
-export function generateAccessRefreshTokens(payload: JwtPayload): TokenPair {
+export function generateAccessRefreshTokens(payload: JwtPayload): TokenPair[] {
 
-	const accessToken = generateToken(payload, accessTokenExpiry);
-	const refreshToken = generateToken(payload, refreshTokenExpiry);
+	const accessTokenPair = generateToken(payload, accessTokenExpiry);
+	const refreshTokenPair = generateToken(payload, refreshTokenExpiry);
 
-	const refreshTokenExpiresAt = GetExpirationDate(refreshTokenExpiry);
-
-	return new TokenPair(accessToken, refreshToken, refreshTokenExpiresAt);
+	return [accessTokenPair, refreshTokenPair];
 }
 
-export function generateToken(payload: JwtPayload, tokenExpiry: string): string {
-	return jwt.sign(payload, secretKey, { expiresIn: tokenExpiry });
-}
+export function generateToken(payload: JwtPayload, tokenExpiry: string): TokenPair {
 
-export function GetExpirationDate(expiry: string) {
-	const refreshTokenExpiresAt = new Date();
-	refreshTokenExpiresAt.setTime(refreshTokenExpiresAt.getTime() + ms(expiry));
-	return refreshTokenExpiresAt;
+	const token = jwt.sign(payload, secretKey, { expiresIn: tokenExpiry });
+
+	const expiresAt = new Date();
+	expiresAt.setTime(expiresAt.getTime() + ms(tokenExpiry));
+
+	return new TokenPair(token, expiresAt)
 }
 
 export interface JwtPayload {
@@ -47,8 +45,7 @@ export interface JwtPayload {
 
 export class TokenPair {
 	constructor(
-		public accessToken: string, 
-		public refreshToken: string,
-		public refreshTokenExpiresAt: Date,
+		public token: string, 
+		public expiresAt: Date,
 	) { }
 }

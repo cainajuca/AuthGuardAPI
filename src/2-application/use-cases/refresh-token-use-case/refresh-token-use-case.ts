@@ -16,7 +16,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
             return new RefreshTokenUseCaseOutput(false);
         }
         
-        const { accessToken, refreshToken, refreshTokenExpiresAt } = generateAccessRefreshTokens({
+        const [ accessTokenPair, refreshTokenPair ] = generateAccessRefreshTokens({
             _id: input.userId,
             username: input.username,
             role: input.role,
@@ -24,9 +24,9 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
         
         await this.refreshTokenRepository.deleteByToken(input.refreshToken);
         
-        const refreshTokenEntity = new RefreshToken(refreshToken, input.userId, refreshTokenExpiresAt, new Date());
+        const refreshTokenEntity = new RefreshToken(refreshTokenPair.token, input.userId, refreshTokenPair.expiresAt, new Date());
         await this.refreshTokenRepository.save(refreshTokenEntity);
                 
-        return new RefreshTokenUseCaseOutput(true, accessToken, refreshToken);
+        return new RefreshTokenUseCaseOutput(true, accessTokenPair.token, refreshTokenPair.token);
     }
 }

@@ -77,16 +77,16 @@ export class AuthController implements IAuthController {
 			if (!isPasswordValid)
 				return res.status(400).send(new OutputVM(400, null, ['Invalid username or password']));
 
-			const { accessToken, refreshToken, refreshTokenExpiresAt } = generateAccessRefreshTokens({
+			const [ accessTokenPair, refreshTokenPair ] = generateAccessRefreshTokens({
 				_id: user.id,
 				username: user.username,
 				role: user.role,
 			});
 
-			const tokenEntity = new RefreshToken(refreshToken, user.id, refreshTokenExpiresAt, new Date());
+			const tokenEntity = new RefreshToken(refreshTokenPair.token, user.id, refreshTokenPair.expiresAt, new Date());
 			await this.refreshTokenRepository.save(tokenEntity);
 			
-			res.cookie('refreshToken', refreshToken, {
+			res.cookie('refreshToken', refreshTokenPair.token, {
 				httpOnly: true,
 				maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
 				
@@ -97,6 +97,7 @@ export class AuthController implements IAuthController {
 
 			const userVM = new UserDTO(user.id, user.name, user.username, user.email, user.role);
 
+			const accessToken = accessTokenPair.token
 			const output = { userVM, accessToken };
 
 			return res.status(200).send(new OutputVM(200, output, []));

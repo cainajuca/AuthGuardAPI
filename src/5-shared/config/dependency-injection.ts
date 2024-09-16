@@ -5,8 +5,8 @@ import { DeleteUserUseCase } from '@application/use-cases/delete-user-use-case/d
 import { UserController } from '@presentation/controllers/user-controller';
 import { AuthController } from '@presentation/controllers/auth-controller';
 
-import { RedisCacheService } from '@infra/cache-temp/redis-cache-service';
-import { createRedisClient } from '@infra/cache-temp/context';
+import { RedisCacheService } from '@infra/cache/redis-cache-service';
+import { createRedisClient } from '@infra/cache/context';
 import { RefreshTokenRepository } from '@infra/repositories/refresh-token-repository';
 import { RefreshTokenUseCase } from '@application/use-cases/refresh-token-use-case/refresh-token-use-case';
 import { RequestPasswordResetUseCase } from '@application/use-cases/request-password-reset-use-case';

@@ -1,69 +1,135 @@
-# **User-Auth API**
+# **Auth Guard API**
 
-## **Descrição**
+## **Description**
 
-A **User-Auth API** é uma API para um sistema de autenticação de usuários, projetada para fornecer funcionalidades completas de gerenciamento de usuários, incluindo autenticação segura. Este projeto é parte de um portfólio profissional, demonstrando proficiência em NodeJS, bancos de dados NoSQL, e tecnologias de DevOps como Docker e Cloud.
+The **Auth Guard API** is an API for a user authentication system, designed to provide full user management functionalities, including secure authentication. This project is part of a professional portfolio, demonstrating proficiency in NodeJS, NoSQL databases, and DevOps technologies such as Docker and Cloud.
 
-## **Motivação**
+## **Disclaimer**
 
-O objetivo deste projeto é criar um portfólio que demonstre habilidades técnicas avançadas em desenvolvimento backend com NodeJS e MongoDB, além de destacar o domínio de práticas DevOps através do uso de Docker e implementação em ambientes de Cloud, como o Vercel.
+This project uses a folder and file structure that is more complex than necessary, purely to demonstrate my understanding of advanced project organization patterns. I understand that complex and robust structures are not ideal for simple systems like this one. However, the goal here is to showcase my proficiency in scalable and maintainable software design.
 
-## **Tecnologias Utilizadas**
+## **Technologies Used**
 
-- **Linguagem**: Typescript
-- **Tecnologias**: NodeJS, Docker, Vercel, MongoDB
-- **Bibliotecas**: Express, Bcrypt, JWT, BodyParser
+- **Language**: Typescript
+- **Technologies**: NodeJS, Docker, AWS, MongoDB
+- **Libraries**: 
+  - **Express**: Web framework for building APIs.
+  - **Bcrypt**: For hashing passwords securely.
+  - **JWT (jsonwebtoken)**: For implementing authentication via access and refresh tokens.
+  - **CookieParser**: For handling cookies, particularly for storing refresh tokens in HTTP-only cookies.
+  - **Nodemailer**: For sending emails for password reset and account activation.
+  - **Redis**: Used for caching the list of active users.
 
-## **Requisitos de Sistema**
+## **Features**
 
-(Preencher posteriormente)
+- **Complete User CRUD**
+  - Create, read, update, and delete users.
+- **Authentication**
+  - Authentication using Access and Refresh Tokens with JSON Web Tokens (JWT).
+- **Password Reset via Email**: 
+  - A password reset link is sent to the user’s registered email, allowing them to securely update their password.
+- **Account Activation via Email**: 
+  - Upon registration, users receive an email to activate their account, ensuring the authenticity of their email address.
 
-## **Como Rodar o Projeto**
+## **How to Run the Project**
 
-(Preencher posteriormente)
+Make sure to configure the necessary environment variables in a .env file based on the .env.example provided in the project.
+You can run the project with Docker or directly using Yarn. Below are the steps for each method:
 
-## **Funcionalidades**
+### Using Docker:
 
-- **CRUD Completo de Usuários**
-  - Criação, leitura, atualização e exclusão de usuários.
-- **Autenticação**
-  - Implementação de autenticação com JSON Web Tokens (JWT).
-  
-## **Estrutura do Projeto**
+- **Start the containers:**
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
 
-O projeto segue padrões e princípios sólidos de engenharia de software para garantir manutenibilidade e escalabilidade:
+- **Stop the containers:**
+```bash
+docker compose -f docker-compose.dev.yml down
+```
 
-- **Patterns Adotados**:
+### Using Yarn:
+Alternatively, you can start this API without Docker by cloning this repository and running the following command in the project root.
+
+```bash
+git clone https://github.com/cainajuca/AuthGuardAPI.git
+yarn install
+yarn build
+yarn start:prod
+```
+
+## **Project Structure**
+
+The project follows solid software engineering patterns and principles to ensure maintainability and scalability:
+
+- **Adopted Patterns**:
   - **Domain-Driven Design (DDD)**
   - **Repository Pattern**
   - **CQRS (Command Query Responsibility Segregation)**
 
-- **Princípios**:
+- **Principles**:
   - **SOLID**
   - **Clean Architecture**
 
-- **Camadas DDD**:
-  - **Presentation**: Recebe solicitações dos usuários, chama serviços da aplicação, e retorna respostas. Lida com a interação do mundo externo com a aplicação.
+- **DDD Layers**:
+  - **Presentation**: Receives user requests, calls application services, and returns responses. It handles external interaction with the application.
 
-  - **Application**:  Orquestra casos de uso, coordenando a lógica de domínio e gerenciando fluxos de trabalho, sem conter lógica de negócio.
+  - **Application**: Orchestrates use cases, coordinating domain logic and managing workflows, without containing business logic.
 
-  - **Domain**: Contém a lógica de negócio central, definindo regras e conceitos do problema que o sistema resolve, independente de infraestrutura.
+  - **Domain**: Contains the core business logic, defining rules and concepts of the problem that the system solves, independent of infrastructure.
 
-  - **Data**: Gerencia a persistência e comunicação com bancos de dados e serviços externos, implementando os repositórios definidos na camada de domínio.
+  - **Infra**: Manages persistence and communication with databases and external services, implementing repositories defined in the domain layer.
 
-## **Autores**
+  - **Shared**: Contains shared utilities and configurations that are used throughout the project, promoting code reuse and centralized management of common functionalities.
+    - **Config**:
+      - `dependency-injection.ts`: Configures the dependency injection for the entire project.
+      - `env.ts`: Loads environment variables using `dotenv`.
 
-- **Cainã da Costa Jucá**
+    - **Utils**:
+      - `bcrypt.ts`: Provides password encryption functionality.
+      - `jwt.ts`: Manages JSON Web Token (JWT) generation and validation.
 
-## **Referências e Links**
+## **Environment Variables**
 
-(Preencher posteriormente)
+The following environment variables must be configured in a `.env` file for the API to work properly:
 
+### Server Configuration
+- **`API_PORT`**: The port where the API will run (default: 8080).
+- **`API_URL`**: The base URL where the API will be accessible (default: `http://localhost:8080`).
 
-Apagar abaixo:
-		"build": "yarn workspaces run build",
-		"lint": "yarn workspaces run lint",
-		"test": "yarn workspaces run test",
-		"start": "yarn workspace @user-auth/1-presentation start",
-		"dev": "yarn workspace @user-auth/1-presentation dev",
-		"clean": "yarn workspaces run clean && rm -rf node_modules"
+### JWT Configuration
+- **`JWT_SECRET`**: Secret key used to sign and verify JSON Web Tokens (JWT). This should be a strong, secure key to ensure token security.
+
+### MongoDB Configuration
+- **`MONGO_DB_CONNECTION_STRING`**: The MongoDB connection string. Replace `<USERNAME>`, `<PASSWORD>`, and `<DB_NAME>` with your MongoDB credentials and database name.
+
+### Admin User Configuration
+- **`ADMIN_PASSWORD`**: Password for the admin account, used for creating or managing administrative functionalities.
+
+### Token Expiration Times
+- **`ACCESS_TOKEN_EXPIRY`**: The duration for which an access token is valid (e.g., `1d` for 1 day).
+- **`REFRESH_TOKEN_EXPIRY`**: The duration for which a refresh token is valid (e.g., `7d` for 7 days).
+
+### Email Configuration
+- **`API_EMAIL_USER`**: Email address used by the API to send system emails (e.g., for password reset and account activation).
+- **`API_EMAIL_PASS`**: Password for the email account that sends system emails.
+
+### URL Configurations
+- **`RESET_URL`**: The URL where users will be redirected to reset their password. Typically, this will be a frontend endpoint.
+- **`ACTIVATION_URL`**: The URL where users will activate their account after registration.
+- **`ACTIVATION_TOKEN_EXPIRY`**: The duration for which the account activation token is valid (e.g., `1d` for 1 day).
+
+## **Planned Improvements**
+
+In future commits, I plan to enhance the project with the following features:
+
+- Log Implementation with **Winston**
+- Automated Testing with **Jest**
+- API Documentation with **Swagger**
+
+## **Authors:**
+- **Cainã Jucá** - [@cainajuca](https://www.linkedin.com/in/cainajuca)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.

@@ -1,4 +1,4 @@
-import { OutputVM } from "../dtos/output-vm";
+import { OutputVM } from "../dtos/output.vm";
 import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from "./delete-user-use-case";
 import { SignUpUseCaseInput, SignUpUseCaseOutput } from "./sign-up-use-case";
 import { UpdateUserUseCaseInput, UpdateUserUseCaseOutput } from "./update-user-use-case";

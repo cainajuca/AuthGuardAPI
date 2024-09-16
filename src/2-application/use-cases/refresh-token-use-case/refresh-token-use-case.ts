@@ -2,7 +2,7 @@ import { IRefreshTokenRepository } from '@domain/repositories/refresh-token-repo
 import { RefreshToken } from '@domain/entities/refresh-token';
 import { generateAccessRefreshTokens } from '@shared/utils/jwt';
 import { IRefreshTokenUseCase } from '../protocols';
-import { RefreshTokenUseCaseInput, RefreshTokenUseCaseOutput } from './refresh-token-use-case.dto';
+import { RefreshTokenUseCaseInput, RefreshTokenUseCaseOutput } from '.';
 
 export class RefreshTokenUseCase implements IRefreshTokenUseCase {
 

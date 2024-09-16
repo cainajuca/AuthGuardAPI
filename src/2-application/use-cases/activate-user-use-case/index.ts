@@ -1,5 +1,6 @@
 import { ActivateUserUseCase } from "./activate-user-use-case";
-import { ActivateUserUseCaseInput, ActivateUserUseCaseOutput } from "./activate-user-use-case.dto";
+import { ActivateUserUseCaseInput } from "./activate-user-use-case-input.dto";
+import { ActivateUserUseCaseOutput } from "./activate-user-use-case-output.dto";
 
 export {
     ActivateUserUseCase,

@@ -1,5 +1,6 @@
 import { SignUpUseCase } from "./sign-up-use-case";
-import { SignUpUseCaseInput, SignUpUseCaseOutput } from "./sign-up-use-case.dto";
+import { SignUpUseCaseInput } from "./sign-up-use-case-input.dto";
+import { SignUpUseCaseOutput } from "./sign-up-use-case-output.dto";
 
 export {
     SignUpUseCase,

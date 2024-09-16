@@ -1,5 +1,6 @@
 import { DeleteUserUseCase } from "./delete-user-use-case";
-import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from "./delete-user-use-case.dto";
+import { DeleteUserUseCaseInput } from "./delete-user-use-case-input.dto";
+import { DeleteUserUseCaseOutput } from "./delete-user-use-case-output.dto";
 
 export {
     DeleteUserUseCase,

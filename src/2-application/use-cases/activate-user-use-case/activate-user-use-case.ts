@@ -1,7 +1,7 @@
-import { OutputVM } from '@application/dtos/output-vm';
+import { OutputVM } from '@application/dtos/output.vm';
 import { IActivateUserUseCase } from '../protocols';
 
-import { ActivateUserUseCaseInput, ActivateUserUseCaseOutput } from './activate-user-use-case.dto'
+import { ActivateUserUseCaseInput, ActivateUserUseCaseOutput } from '.'
 
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 

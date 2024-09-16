@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { ISignUpUseCase } from '../protocols';
-import { SignUpUseCaseInput, SignUpUseCaseOutput } from './sign-up-use-case.dto'
+import { SignUpUseCaseInput, SignUpUseCaseOutput } from '.'
 
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { IRefreshTokenRepository } from '@domain/repositories/refresh-token-repository.interface';

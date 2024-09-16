@@ -1,15 +1,19 @@
-import '@shared/config/env';
+ // Environment configuration import
+ import '@shared/config/env';
 
+// External imports (third-party libraries)
 import http from 'http';
-
 import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+// Infrastructure-related imports (database connection, dependency injection)
 import { connectToDatabase } from '@infra/database/context';
-import router from '@presentation/routes';
 import { initDependencies } from '@shared/config/dependency-injection';
+
+// Presentation-related imports (routes, Swagger)
+import router from '@presentation/routes';
 
 const main = async () => {
 

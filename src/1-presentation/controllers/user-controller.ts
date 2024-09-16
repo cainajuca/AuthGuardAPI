@@ -1,16 +1,21 @@
-import { Request, Response} from "express";
+// External imports (third-party libraries)
+import { Request, Response } from "express";
 
-import { UserVM } from "../view-models/user-vm";
-
-import { IUserController } from "./protocols";
-
+// Domain-related imports (interfaces, entities)
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
-import { UpdateUserUseCaseInput } from "@application/use-cases/update-user-use-case/update-user-use-case.dto";
-import { IDeleteUserUseCase, IUpdateUserUseCase } from "@application/use-cases/protocols";
-import { DeleteUserUseCaseInput } from "@application/use-cases/delete-user-use-case/delete-user-use-case.dto";
-import { OutputVM } from "@application/dtos/output-vm";
 import { ICacheService, CacheKeys } from '@domain/Cache/cache-service.interface';
 import { User } from "@domain/entities/user";
+
+// Application-related imports (use cases, DTOs)
+import { IDeleteUserUseCase, IUpdateUserUseCase } from "@application/use-cases/protocols";
+import { UpdateUserUseCaseInput } from "@application/use-cases/update-user-use-case";
+import { DeleteUserUseCaseInput } from "@application/use-cases/delete-user-use-case";
+import { OutputVM } from "@application/dtos/output.vm";
+
+// Presentation-related imports (protocols, middlewares)
+import { UserVM } from "../view-models/user-vm";
+import { IUserController } from "./protocols";
+
 
 export class UserController implements IUserController {
 	

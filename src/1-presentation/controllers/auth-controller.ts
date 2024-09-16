@@ -1,23 +1,28 @@
+// External imports (third-party libraries)
 import { Request, Response } from 'express';
 
-import { IAuthController } from './protocols';
-
-import { generateAccessRefreshTokens } from '@shared/utils/jwt';
-import { AuthenticatedRequest } from '../middlewares';
-import { verifyPassword } from '@shared/utils/bcrypt';
+// Domain-related imports (interfaces, entities)
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
-import { OutputVM } from '@application/dtos/output-vm';
-import { UserDTO } from '@application/use-cases/user-dto';
-import { CacheKeys, ICacheService } from '@domain/Cache/cache-service.interface';
 import { IRefreshTokenRepository } from '@domain/repositories/refresh-token-repository.interface';
+import { CacheKeys, ICacheService } from '@domain/Cache/cache-service.interface';
 import { RefreshToken } from '@domain/entities/refresh-token';
 
+// Application-related imports (use cases, DTOs)
 import { SignUpUseCase, SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case';
 import { RefreshTokenUseCase, RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case';
 import { RequestPasswordResetUseCase, RequestPasswordResetUseCaseInput } from '@application/use-cases/request-password-reset-use-case';
 import { ResetPasswordUseCase, ResetPasswordUseCaseInput } from '@application/use-cases/reset-password-use-case';
 import { ActivateUserUseCase, ActivateUserUseCaseInput } from '@application/use-cases/activate-user-use-case';
+import { OutputVM } from '@application/dtos/output.vm';
+import { UserDTO } from '@application/dtos/user.dto';
 
+// Utility and shared imports (shared/utils)
+import { generateAccessRefreshTokens } from '@shared/utils/jwt';
+import { verifyPassword } from '@shared/utils/bcrypt';
+
+// Presentation-related imports (protocols, middlewares)
+import { AuthenticatedRequest } from '../middlewares';
+import { IAuthController } from './protocols';
 
 export class AuthController implements IAuthController {
 	constructor(

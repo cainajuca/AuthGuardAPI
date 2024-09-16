@@ -8,10 +8,3 @@ export class ResetPasswordUseCaseInput
     @IsNotEmpty()
     public newPassword: string;
 }
-
-export class ResetPasswordUseCaseOutput {
-	constructor(
-        public valid: boolean,
-        public error?: string,
-    ) { }
-}

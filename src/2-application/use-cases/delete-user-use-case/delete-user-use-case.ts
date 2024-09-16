@@ -1,7 +1,7 @@
-import { OutputVM } from '@root/2-application/dtos/output-vm';
+import { OutputVM } from '@application/dtos/output.vm';
 import { IDeleteUserUseCase } from '../protocols';
 
-import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from './delete-user-use-case.dto'
+import { DeleteUserUseCaseInput, DeleteUserUseCaseOutput } from '.'
 
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 

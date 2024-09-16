@@ -6,10 +6,3 @@ export class RequestPasswordResetUseCaseInput
     @IsEmail()
     public email: string;
 }
-
-export class RequestPasswordResetUseCaseOutput {
-	constructor(
-        public valid: boolean,
-        public error?: string,
-    ) { }
-}

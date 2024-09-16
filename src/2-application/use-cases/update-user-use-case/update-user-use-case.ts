@@ -1,7 +1,7 @@
-import { OutputVM } from '@root/2-application/dtos/output-vm';
+import { OutputVM } from '@application/dtos/output.vm';
 import { IUpdateUserUseCase } from '../protocols';
 
-import { UpdateUserUseCaseInput, UpdateUserUseCaseOutput } from './update-user-use-case.dto'
+import { UpdateUserUseCaseInput, UpdateUserUseCaseOutput } from '.'
 
 import { IUserRepository } from '@domain/repositories/user-repository.interface';
 import { hashPassword } from '@shared/utils/bcrypt'

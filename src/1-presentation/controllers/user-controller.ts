@@ -98,7 +98,7 @@ export class UserController implements IUserController {
 			const input: UpdateUserUseCaseInput = req.body;
 			const output = await this.updateUserUseCase.handleUpdateUser(input);
 
-			if (output.valid) {
+			if (output.valid && output.data.user.isActive) {
 				await this.cacheService.delete(CacheKeys.USER_LIST);
 			}
 
@@ -117,7 +117,7 @@ export class UserController implements IUserController {
 
 			const output = await this.deleteUserUseCase.handleDeleteUser(input);
 
-			if (output.valid) {
+			if (output.valid && output.data.user.isActive) {
 				await this.cacheService.delete(CacheKeys.USER_LIST);
 			}
 

@@ -36,7 +36,7 @@ export class SignUpUseCaseOutput {
         this.valid = valid;
 
         if (valid) {
-            this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role);
+            this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role, user.isActive);
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
         } else {

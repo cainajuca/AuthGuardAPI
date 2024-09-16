@@ -40,8 +40,6 @@ export class AuthController implements IAuthController {
 				return res.status(400).send(new OutputVM(400, null, [result.error]));
 			}
 
-			await this.cacheService.delete(CacheKeys.USER_LIST);
-
 			res.cookie('refreshToken', result.refreshToken, {
 				httpOnly: true,
 				maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
@@ -98,7 +96,7 @@ export class AuthController implements IAuthController {
 				// sameSite: 'strict', // Cross-Site Request Forgery protection
 			});
 
-			const userVM = new UserDTO(user.id, user.name, user.username, user.email, user.role);
+			const userVM = new UserDTO(user.id, user.name, user.username, user.email, user.role, user.isActive);
 
 			const accessToken = accessTokenPair.token
 			const output = { userVM, accessToken };

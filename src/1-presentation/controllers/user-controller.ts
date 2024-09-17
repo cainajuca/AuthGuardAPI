@@ -13,9 +13,8 @@ import { DeleteUserUseCaseInput } from "@application/use-cases/delete-user-use-c
 import { OutputVM } from "@application/dtos/output.vm";
 
 // Presentation-related imports (protocols, middlewares)
-import { UserVM } from "../view-models/user-vm";
+import { UserVM } from "../view-models/user.vm";
 import { IUserController } from "./protocols";
-
 
 export class UserController implements IUserController {
 	

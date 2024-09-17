@@ -17,6 +17,19 @@ const swaggerOptions = {
         ],
     },
     apis: [
+        // endpoints
+        'src/1-presentation/routes/auth.ts',
+        'src/1-presentation/routes/user.ts',
+
+        // presentation dtos
+        'src/1-presentation/view-models/login-output.ts',
+        
+        // application dtos
+        'src/2-application/dtos/*.vm.ts',
+        'src/2-application/dtos/*.dto.ts',
+
+        // use case dtos
+        'src/2-application/use-cases/sign-up-use-case/*.dto.ts',
     ],
 };
 

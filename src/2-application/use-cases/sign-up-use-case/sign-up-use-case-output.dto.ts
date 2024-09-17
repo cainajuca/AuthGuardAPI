@@ -22,3 +22,32 @@ export class SignUpUseCaseOutput {
         }
     }
 }
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SignUpUseCaseOutput:
+ *       type: object
+ *       properties:
+ *         user:
+ *           $ref: '#/components/schemas/UserDTO'
+ *         accessToken:
+ *           type: string
+ *           description: JWT access token provided after successful signup
+ *           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *         refreshToken:
+ *           type: string
+ *           description: JWT refresh token provided after successful signup
+ *           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *       example:
+ *         user:
+ *           id: "61d4c8e1f5a6c404d1f4e5b9"
+ *           username: "caina_juca"
+ *           name: "Cainã Jucá"
+ *           email: "caina@example.com"
+ *           role: "user"
+ *           isActive: true
+ *         accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *         refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ */

@@ -14,15 +14,15 @@ import { RequestPasswordResetUseCase, RequestPasswordResetUseCaseInput } from '@
 import { ResetPasswordUseCase, ResetPasswordUseCaseInput } from '@application/use-cases/reset-password-use-case';
 import { ActivateUserUseCase, ActivateUserUseCaseInput } from '@application/use-cases/activate-user-use-case';
 import { OutputVM } from '@application/dtos/output.vm';
-import { UserDTO } from '@application/dtos/user.dto';
 
 // Utility and shared imports (shared/utils)
 import { generateAccessRefreshTokens } from '@shared/utils/jwt';
 import { verifyPassword } from '@shared/utils/bcrypt';
 
-// Presentation-related imports (protocols, middlewares)
+// Presentation-related imports (protocols, middlewares, view models)
 import { AuthenticatedRequest } from '../middlewares';
 import { IAuthController } from './protocols';
+import { LoginOutput } from '../view-models/login-output';
 
 export class AuthController implements IAuthController {
 	constructor(
@@ -101,10 +101,7 @@ export class AuthController implements IAuthController {
 				// sameSite: 'strict', // Cross-Site Request Forgery protection
 			});
 
-			const userVM = new UserDTO(user.id, user.name, user.username, user.email, user.role, user.isActive);
-
-			const accessToken = accessTokenPair.token
-			const output = { userVM, accessToken };
+			const output = new LoginOutput(user, accessTokenPair.token);
 
 			return res.status(200).send(new OutputVM(200, output, []));
 

@@ -14,6 +14,7 @@ import { initDependencies } from '@shared/config/dependency-injection';
 
 // Presentation-related imports (routes, Swagger)
 import router from '@presentation/routes';
+import { setupSwagger } from '@shared/config/swagger.config';
 
 const main = async () => {
 
@@ -23,6 +24,8 @@ const main = async () => {
 	app.use(compression());
 	app.use(express.json());
 	app.use(cookieParser());
+
+	setupSwagger(app);
 
 	const server = http.createServer(app);
 

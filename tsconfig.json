@@ -4,7 +4,7 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"target": "ES6",
-
+		"resolveJsonModule": true,
 		"module": "NodeNext",
 		"baseUrl": "./src",
 		"outDir": "dist",

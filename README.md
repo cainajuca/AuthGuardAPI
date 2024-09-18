@@ -119,13 +119,17 @@ The following environment variables must be configured in a `.env` file for the 
 - **`ACTIVATION_URL`**: The URL where users will activate their account after registration.
 - **`ACTIVATION_TOKEN_EXPIRY`**: The duration for which the account activation token is valid (e.g., `1d` for 1 day).
 
+## **API Documentation with Swagger**
+The project includes API documentation with **Swagger**. You can access the Swagger UI by running the project and navigating to the `/api-docs` endpoint.
+- **URL**: [http://localhost:8080/api-docs](http://localhost:8080/api-docs)
+- **Authorization**: You can use the **Authorize** button to pass a JWT for secured routes.
+
 ## **Planned Improvements**
 
 In future commits, I plan to enhance the project with the following features:
 
 - Log Implementation with **Winston**
 - Automated Testing with **Jest**
-- API Documentation with **Swagger**
 
 ## **Authors:**
 - **Cainã Jucá** - [@cainajuca](https://www.linkedin.com/in/cainajuca)

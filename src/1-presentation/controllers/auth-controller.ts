@@ -8,12 +8,13 @@ import { CacheKeys, ICacheService } from '@domain/Cache/cache-service.interface'
 import { RefreshToken } from '@domain/entities/refresh-token';
 
 // Application-related imports (use cases, DTOs)
-import { SignUpUseCase, SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case';
-import { RefreshTokenUseCase, RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case';
-import { RequestPasswordResetUseCase, RequestPasswordResetUseCaseInput } from '@application/use-cases/request-password-reset-use-case';
-import { ResetPasswordUseCase, ResetPasswordUseCaseInput } from '@application/use-cases/reset-password-use-case';
-import { ActivateUserUseCase, ActivateUserUseCaseInput } from '@application/use-cases/activate-user-use-case';
+import { SignUpUseCaseInput } from '@application/use-cases/sign-up-use-case';
+import { RefreshTokenUseCaseInput } from '@application/use-cases/refresh-token-use-case';
+import { RequestPasswordResetUseCaseInput } from '@application/use-cases/request-password-reset-use-case';
+import { ResetPasswordUseCaseInput } from '@application/use-cases/reset-password-use-case';
+import { ActivateUserUseCaseInput } from '@application/use-cases/activate-user-use-case';
 import { OutputVM } from '@application/dtos/output.vm';
+import { IActivateUserUseCase, IRefreshTokenUseCase, IRequestPasswordResetUseCase, IResetPasswordUseCase, ISignUpUseCase } from '@application/use-cases/protocols';
 
 // Utility and shared imports (shared/utils)
 import { generateAccessRefreshTokens } from '@shared/utils/jwt';
@@ -26,11 +27,11 @@ import { LoginOutput } from '../view-models/login-output';
 
 export class AuthController implements IAuthController {
 	constructor(
-		private readonly signUpUseCase: SignUpUseCase,
-		private readonly refreshTokenUseCase: RefreshTokenUseCase,
-		private readonly requestPasswordResetUseCase: RequestPasswordResetUseCase,
-		private readonly resetPasswordUseCase: ResetPasswordUseCase,
-		private readonly activateUserUseCase: ActivateUserUseCase,
+		private readonly signUpUseCase: ISignUpUseCase,
+		private readonly refreshTokenUseCase: IRefreshTokenUseCase,
+		private readonly requestPasswordResetUseCase: IRequestPasswordResetUseCase,
+		private readonly resetPasswordUseCase: IResetPasswordUseCase,
+		private readonly activateUserUseCase: IActivateUserUseCase,
 		private readonly userRepository: IUserRepository,
 		private readonly refreshTokenRepository: IRefreshTokenRepository,
 		private readonly cacheService: ICacheService

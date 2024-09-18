@@ -115,7 +115,7 @@ export class AuthController implements IAuthController {
 			const refreshToken = req.cookies.refreshToken;
 
 			if (!refreshToken) {
-				return res.status(401).json({ message: 'Refresh Token not found' });
+				return res.status(401).send(new OutputVM(400, null, ['Refresh Token not found']));
 			}
 
 			const input: RefreshTokenUseCaseInput = {
@@ -165,7 +165,7 @@ export class AuthController implements IAuthController {
 
 			return res.status(200).send(new OutputVM(200, { message: 'Logged out successfully.' }, []));
 		} catch (error) {
-			return res.status(500).send(new OutputVM(400, null, [error.message]));
+			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
 	}
 	

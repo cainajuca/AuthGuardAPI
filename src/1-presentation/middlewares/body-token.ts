@@ -2,13 +2,14 @@ import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '.';
 
 import { verifyToken } from '@shared/utils/jwt';
+import { OutputVM } from '@application/dtos/output.vm';
 
 export const verifyBodyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   
     const token = req.body.token;
   
     if (!token) {
-        return res.status(401).json({ message: 'Reset token was not found' });
+        return res.status(401).send(new OutputVM(401, null, ['Reset token was not found.']));
     }
 
     try {
@@ -20,6 +21,6 @@ export const verifyBodyToken = (req: AuthenticatedRequest, res: Response, next: 
         
         next();
     } catch (error) {
-        return res.status(403).json({ message: 'Invalid or expired reset token.' });
+        return res.status(403).send(new OutputVM(403, null, ['Invalid or expired reset token.']));
     }
 };

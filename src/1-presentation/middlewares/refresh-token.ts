@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '.';
 
 import { verifyToken } from '@shared/utils/jwt';
+import { OutputVM } from '@application/dtos/output.vm';
 
 export const refreshJWT = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   
@@ -9,7 +10,7 @@ export const refreshJWT = (req: AuthenticatedRequest, res: Response, next: NextF
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-        return res.status(401).json({ message: 'Refresh token was not found.' });
+        return res.status(401).send(new OutputVM(401, null, ['Refresh token was not found.']));
     }
 
     try {
@@ -21,6 +22,6 @@ export const refreshJWT = (req: AuthenticatedRequest, res: Response, next: NextF
 
         next();
     } catch (err) {
-        return res.status(403).json({ message: 'Invalid or expired refresh token.' });
+        return res.status(403).send(new OutputVM(403, null, ['Invalid or expired refresh token.']));
     }
 };

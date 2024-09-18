@@ -6,9 +6,9 @@ const swaggerOptions = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'API de Autenticação',
+            title: 'Auth Guard API',
             version: '1.0.0',
-            description: 'Documentação da API de autenticação usando Swagger',
+            description: 'Documentation for an authentication API using Swagger',
         },
         servers: [
             {

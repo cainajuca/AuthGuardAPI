@@ -30,6 +30,9 @@ const swaggerOptions = {
 
         // use case dtos
         'src/2-application/use-cases/sign-up-use-case/*.dto.ts',
+        'src/2-application/use-cases/request-password-reset-use-case/*.dto.ts',
+        'src/2-application/use-cases/reset-password-use-case/*.dto.ts',
+        'src/2-application/use-cases/activate-user-use-case/*.dto.ts',
     ],
 };
 

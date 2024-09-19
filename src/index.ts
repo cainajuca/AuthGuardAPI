@@ -1,5 +1,5 @@
  // Environment configuration import
- import '@shared/config/env';
+ import './config/env';
 
 // External imports (third-party libraries)
 import http from 'http';
@@ -9,12 +9,12 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 // Infrastructure-related imports (database connection, dependency injection)
-import { connectToDatabase } from '@infra/database/context';
-import { initDependencies } from '@shared/config/dependency-injection';
+import { connectToDatabase } from './config/db.config';
+import { initDependencies } from './config/dependency-injection';
 
 // Presentation-related imports (routes, Swagger)
-import router from '@presentation/routes';
-import { setupSwagger } from '@shared/config/swagger.config';
+import router from './routes';
+import { setupSwagger } from './config/swagger.config';
 
 const main = async () => {
 

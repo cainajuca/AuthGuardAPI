@@ -8,7 +8,7 @@ services:
     environment:
       NODE_ENV: development
       REDIS_URL: redis://redis:6379
-      ACESS_TOKEN_EXPIRY: 2h
+      ACESS_TOKEN_EXPIRY: 1d
       REFRESH_TOKEN_EXPIRY: 7d
     env_file:
       - .env

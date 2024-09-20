@@ -7,17 +7,17 @@ FROM node:20-alpine
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and yarn.lock files
-COPY package.json yarn.lock ./
+# Copy package.json and package-lock.json files
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
 # Build the TypeScript code
-RUN yarn build
+RUN npm run build
 
 # Expose the application port
 EXPOSE 8080

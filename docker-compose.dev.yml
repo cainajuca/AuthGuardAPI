@@ -9,7 +9,7 @@ services:
       NODE_ENV: development
       REDIS_URL: redis://redis:6379
       CHOKIDAR_USEPOLLING: "true" # Nodemon uses polling to detect file changes from the host system, necessary in Docker environments
-      ACESS_TOKEN_EXPIRY: 20m
+      ACESS_TOKEN_EXPIRY: 1d
       REFRESH_TOKEN_EXPIRY: 7d
     env_file:
       - .env

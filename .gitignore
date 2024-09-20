@@ -1,10 +1,10 @@
-# Dependências do Node
+# Node dependencies
 node_modules/
 
-# Diretórios de build
+# Build directories
 dist/
 build/
 .vs/
 
-# Arquivos de ambiente
+# Environment
 .env

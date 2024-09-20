@@ -17,7 +17,7 @@ export default (router: Router, authController: IAuthController) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/SignUpUseCaseInput'
+ *             $ref: '#/components/schemas/SignUpInput'
  *     responses:
  *       201:
  *         description: Returns the access token in the response body and sets the refresh token in an HTTP-only cookie.
@@ -27,7 +27,7 @@ export default (router: Router, authController: IAuthController) => {
  *               $ref: '#/components/schemas/OutputVM'
  *               properties:
  *                 data:
- *                   $ref: '#/components/schemas/SignUpUseCaseOutput'
+ *                   $ref: '#/components/schemas/SignUpOutput'
  *       400:
  *         description: Bad request, returns null for data and a list of errors.
  *         content:
@@ -255,7 +255,7 @@ export default (router: Router, authController: IAuthController) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/RequestPasswordResetUseCaseInput'
+ *             $ref: '#/components/schemas/RequestPasswordResetInput'
  *     responses:
  *       200:
  *         description: Password reset link sent successfully.
@@ -307,7 +307,7 @@ export default (router: Router, authController: IAuthController) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ResetPasswordUseCaseInput'
+ *             $ref: '#/components/schemas/ResetPasswordInput'
  *     responses:
  *       200:
  *         description: Password reset successfully.
@@ -383,7 +383,7 @@ export default (router: Router, authController: IAuthController) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/ActivateUserUseCaseInput'
+ *             $ref: '#/components/schemas/ActivateUserInput'
  *     responses:
  *       200:
  *         description: User activated successfully and cache cleared.
@@ -393,7 +393,7 @@ export default (router: Router, authController: IAuthController) => {
  *               $ref: '#/components/schemas/OutputVM'
  *               properties:
  *                 data:
- *                   $ref: '#/components/schemas/ActivateUserUseCaseOutput'
+ *                   $ref: '#/components/schemas/ActivateUserOutput'
  *       400:
  *         description: Bad request due to invalid input or unexpected error.
  *         content:

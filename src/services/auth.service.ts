@@ -22,21 +22,21 @@ export class AuthService {
         private readonly refreshTokenRepository: RefreshTokenRepository,
     ) { }
 
-	async activateUser(input: ActivateUserInput): Promise<OutputVM<ActivateUserOutput>> {
+	async activateUser(input: ActivateUserInput): Promise<ActivateUserOutput> {
 
 		const user = await this.userRepository.findByActivationToken(input.token);
 
 		if(!user) {
-			return new OutputVM<ActivateUserOutput>(400, null, ['User does not exist.']);
+			return new ActivateUserOutput(false, null, 'User does not exist.');
 		}
 		
 		user.isActive = true;
 
 		await this.userRepository.update(user);
 
-		const output = new ActivateUserOutput(user);
+		const output = new ActivateUserOutput(true, user);
 
-		return new OutputVM<ActivateUserOutput>(200, output, []);
+		return output;
 	}
 
     async refreshToken(input: RefreshTokenInput): Promise<RefreshTokenOutput> {

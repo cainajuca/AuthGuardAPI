@@ -75,7 +75,6 @@ export class AuthController implements IAuthController {
 
 			const user = await this.userRepository.findByUsername(username);
 
-			
 			if(!user)
 				return res.status(400).send(new OutputVM(400, null, ['User does not exist']));
 			
@@ -220,11 +219,13 @@ export class AuthController implements IAuthController {
 			const input: ActivateUserInput = req.body;
 			const output = await this.authService.activateUser(input);
 
-			if (output.valid) {
-				await this.cacheService.delete(CacheKeys.USER_LIST);
+			if (!output.valid) {
+				return res.status(400).send(new OutputVM(400, null, [output.error]));
 			}
-
-			return res.status(output.statusCode).send(output);
+			
+			await this.cacheService.delete(CacheKeys.USER_LIST);
+			
+			return res.status(200).send(new OutputVM(200, output, []));
 
 		} catch (error) {
 			return res.status(400).send(new OutputVM(400, null, [error.message]));

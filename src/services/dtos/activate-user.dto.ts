@@ -24,10 +24,17 @@ export class ActivateUserInput
  */
 
 export class ActivateUserOutput {
-	public user: UserDTO;
+	public valid: boolean;
+	public user?: UserDTO;
+	public error?: string;
 
-	constructor(user: IUser) {
-		this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role, user.isActive);
+	constructor(valid: boolean, user?: IUser, error?: string) {
+		this.valid = valid;
+
+		if(user)
+			this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role, user.isActive);
+
+		this.error = error;
 	}
 }
 
@@ -38,10 +45,19 @@ export class ActivateUserOutput {
  *     ActivateUserOutput:
  *       type: object
  *       properties:
+ *         valid:
+ *           type: boolean
+ *           description: Indicates whether the operation was successful
+ *           example: true
  *         user:
  *           $ref: '#/components/schemas/UserDTO'
- *           description: The details of the activated user
+ *           description: The user data returned after activation, if successful
+ *         error:
+ *           type: string
+ *           description: Error message in case of failure
+ *           example: "Invalid activation token"
  *       example:
+ *         valid: true
  *         user:
  *           id: "61d4c8e1f5a6c404d1f4e5b9"
  *           username: "caina_juca"
@@ -49,4 +65,5 @@ export class ActivateUserOutput {
  *           email: "caina@example.com"
  *           role: "user"
  *           isActive: true
+ *         error: null
  */

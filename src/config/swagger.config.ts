@@ -44,7 +44,7 @@ const swaggerOptions = {
         'src/dtos/*.dto.ts',
 
         // service dtos
-        'src/services/dtos/sign-up.dto.ts',
+        'src/services/dtos/*.dto.ts',
     ],
 };
 

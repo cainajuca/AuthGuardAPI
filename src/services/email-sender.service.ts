@@ -27,8 +27,6 @@ export async function sendResetPasswordEmail(email: string, resetToken: string) 
 export async function sendActivationEmail(email: string, activationToken: string, activationTokenExpiresAt: Date) {
     const activationUrl = `${process.env.ACTIVATION_URL}?token=${activationToken}`;
 
-	console.log(activationUrl);
-
     const msg = {
         to: email,
         from: process.env.API_EMAIL_USER,
@@ -42,7 +40,6 @@ export async function sendActivationEmail(email: string, activationToken: string
     };
 
     try {
-		console.log(msg.html);
         await sgMail.send(msg);
         console.log('Activation email sent successfully!');
     } catch (error) {

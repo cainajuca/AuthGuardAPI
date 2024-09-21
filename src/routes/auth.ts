@@ -373,7 +373,7 @@ export default (router: Router, authController: IAuthController) => {
 	router.post('/auth/activate', verifyBodyToken, authController.activateUser.bind(authController));
 /**
  * @swagger
- * /auth/activate-user:
+ * /auth/activate:
  *   post:
  *     summary: Activates a user account
  *     description: This endpoint activates a user's account. Upon successful activation, the user list cache is cleared.

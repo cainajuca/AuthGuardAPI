@@ -21,24 +21,20 @@ export class OutputVM<T = any> {
  *       properties:
  *         valid:
  *           type: boolean
- *           description: Indicates whether the operation was successful, determined by the presence of errors.
- *           example: false
+ *           description: Indicates whether the overall operation was successful
+ *           example: true
  *         statusCode:
  *           type: integer
- *           description: The HTTP status code of the response.
- *           example: 400
+ *           description: HTTP status code of the response
+ *           example: 200
  *         data:
- *           description: Contains the result of the operation. In case of errors, this will be null.
- *           nullable: true
- *           type: object
- *           example: null
+ *           description: Contains the result of the operation, specific to each endpoint
  *         errors:
  *           type: array
  *           items:
  *             type: string
- *           description: A list of error messages, if any.
- *           example:
- *             - "Invalid username or password"
+ *           description: A list of error messages, if any
+ *           example: []
  *       examples:
  *         successResponse:
  *           summary: Generic example of a successful response

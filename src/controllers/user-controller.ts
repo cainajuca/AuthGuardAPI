@@ -99,12 +99,15 @@ export class UserController implements IUserController {
 			const input: UpdateUserInput = req.body;
 			const output = await this.userService.updateUser(input);
 
-			if (output.valid && output.data.user.isActive) {
+			if (!output.valid) {
+				return res.status(400).send(new OutputVM(400, null, [output.error]));
+			}
+
+			if (output.valid && output.user.isActive) {
 				await this.cacheService.delete(CacheKeys.USER_LIST);
 			}
 
-			return res.status(output.statusCode).send(output);
-
+			return res.status(200).send(new OutputVM(200, output, []));
 		} catch (error) {
 			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}
@@ -118,12 +121,15 @@ export class UserController implements IUserController {
 
 			const output = await this.userService.deleteUser(input);
 
-			if (output.valid && output.data.user.isActive) {
+			if (!output.valid) {
+				return res.status(400).send(new OutputVM(400, null, [output.error]));
+			}
+
+			if (output.valid && output.user.isActive) {
 				await this.cacheService.delete(CacheKeys.USER_LIST);
 			}
 
-			return res.status(output.statusCode).send(output);
-
+			return res.status(200).send(new OutputVM(200, output, []));
 		} catch (error) {
 			return res.status(400).send(new OutputVM(400, null, [error.message]));
 		}

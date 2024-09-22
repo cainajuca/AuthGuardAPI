@@ -460,12 +460,9 @@ export default (router: Router, userController: IUserController) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/OutputVM'
- *             example:
- *               valid: true
- *               statusCode: 200
- *               data:
- *                 message: "User deleted successfully."
- *               errors: []
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/DeleteUserOutput'
  *       400:
  *         description: Bad request, typically due to validation errors or other input-related issues.
  *         content:
@@ -474,13 +471,13 @@ export default (router: Router, userController: IUserController) => {
  *               $ref: '#/components/schemas/OutputVM'
  *             examples:
  *               validationError:
- *                 summary: Invalid user ID
+ *                 summary: No user with the given Id
  *                 value:
  *                   valid: false
  *                   statusCode: 400
  *                   data: null
  *                   errors:
- *                     - "Invalid input data provided."
+ *                     - "User does not exist."
  *               unexpectedError:
  *                 summary: Unexpected error
  *                 value:

@@ -24,10 +24,17 @@ export class DeleteUserInput
  */
 
 export class DeleteUserOutput {
-	public user: UserDTO;
+	public valid: boolean;
+	public user?: UserDTO;
+	public error?: string;
 
-	constructor(user: IUser) {
-		this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role, user.isActive);
+	constructor(valid: boolean, user?: IUser, error?: string) {
+		this.valid = valid;
+
+		if(user)
+			this.user = new UserDTO(user.id, user.username, user.name, user.email, user.role, user.isActive);
+
+		this.error = error;
 	}
 }
 
@@ -38,10 +45,19 @@ export class DeleteUserOutput {
  *     DeleteUserOutput:
  *       type: object
  *       properties:
+ *         valid:
+ *           type: boolean
+ *           description: Indicates whether the operation was successful
+ *           example: true
  *         user:
  *           $ref: '#/components/schemas/UserDTO'
- *           description: The user details of the deleted user
+ *           description: The user details of the deleted user, if the operation was successful
+ *         error:
+ *           type: string
+ *           description: Error message in case of failure
+ *           example: "User not found"
  *       example:
+ *         valid: true
  *         user:
  *           id: "61d4c8e1f5a6c404d1f4e5b9"
  *           username: "deleted_user"
@@ -49,4 +65,5 @@ export class DeleteUserOutput {
  *           email: "deleted@example.com"
  *           role: "user"
  *           isActive: false
+ *         error: null
  */

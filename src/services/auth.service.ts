@@ -120,52 +120,55 @@ export class AuthService {
     }
 
     async signUp(input: SignUpInput): Promise<SignUpOutput> {
+        try {
+            if(input.password != input.confirmPassword) {
+                return new SignUpOutput(false, null, null, null, 'Please ensure password and confirm password are matching.');
+            }
 
-		if(input.password != input.confirmPassword) {
-			return new SignUpOutput(false, null, null, null, 'Please ensure password and confirm password are matching.');
-		}
+            const existingUser = await this.userRepository.findByUsername(input.username);
 
-		const existingUser = await this.userRepository.findByUsername(input.username);
+            if(existingUser)
+                return new SignUpOutput(false, null, null, null, 'User already exists.');
 
-		if(existingUser)
-			return new SignUpOutput(false, null, null, null, 'User already exists.');
+            const jwtPayload = {
+                _id: new ObjectId().toString(),
+                username: input.username,
+                role: 'user',
+            };
 
-		const jwtPayload = {
-			_id: new ObjectId().toString(),
-			username: input.username,
-			role: 'user',
-		};
+            const activationTokenPair = generateActivationToken(jwtPayload);
 
-		const activationTokenPair = generateActivationToken(jwtPayload);
+            const passwordHash = await hashPassword(input.password);
+            
+            const user = new User({
+                _id: jwtPayload._id,
+                username: input.username,
+                name: input.name,
+                email: input.email,
+                password: passwordHash,
+                role: jwtPayload.role,
+                isActive: false, // not active
+                activationToken: activationTokenPair.token,
+                activationTokenExpiresAt: activationTokenPair.expiresAt,
+            });
 
-		const passwordHash = await hashPassword(input.password);
-		
-		const user = new User({
-            _id: jwtPayload._id,
-            username: input.username,
-            name: input.name,
-            email: input.email,
-            password: passwordHash,
-            role: jwtPayload.role,
-            isActive: false, // not active
-            activationToken: activationTokenPair.token,
-            activationTokenExpiresAt: activationTokenPair.expiresAt,
-        });
+            await this.userRepository.save(user);
 
-		await this.userRepository.save(user);
+            const [ accessTokenPair, refreshTokenPair ] = generateAccessRefreshTokens(jwtPayload);
 
-		const [ accessTokenPair, refreshTokenPair ] = generateAccessRefreshTokens(jwtPayload);
+            const tokenEntity = new RefreshToken({
+                token: refreshTokenPair.token,
+                userId: user.id,
+                expiresAt: refreshTokenPair.expiresAt,
+            });
 
-        const tokenEntity = new RefreshToken({
-            token: refreshTokenPair.token,
-            userId: user.id,
-            expiresAt: refreshTokenPair.expiresAt,
-        });
+            await this.refreshTokenRepository.save(tokenEntity);
 
-		await this.refreshTokenRepository.save(tokenEntity);
+            sendActivationEmail(user.email, activationTokenPair.token, activationTokenPair.expiresAt);
 
-		sendActivationEmail(user.email, activationTokenPair.token, activationTokenPair.expiresAt);
-
-		return new SignUpOutput(true, user, accessTokenPair.token, refreshTokenPair.token);
+            return new SignUpOutput(true, user, accessTokenPair.token, refreshTokenPair.token);
+        } catch (error) {
+            return new SignUpOutput(false, null, null, null, 'An error occurred during sign-up.');
+        }
 	}
 }

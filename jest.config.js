@@ -1,3 +1,8 @@
+// if it grows, move to jest.setup.js
+// add the following line to the module.exports of this file
+// setupFiles: ['<rootDir>/jest.setup.js'],
+process.env.SENDGRID_API_KEY = 'SG.dummy-api-key-for-testing';
+
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',

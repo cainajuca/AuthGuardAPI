@@ -14,7 +14,7 @@ services:
       - .env
     depends_on:
       - redis
-    command: yarn start:prod
+    command: npm run start:prod
   
   redis:
     image: redis:7.0-alpine

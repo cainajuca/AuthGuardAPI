@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { seedData } from 'seeds/seed-data';
 
 export async function connectToDatabase() {
-	mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING).then()
+	await mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING).then()
 		.then(async () => {
 			console.log('Connected to MongoDB');
 

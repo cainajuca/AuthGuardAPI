@@ -18,3 +18,15 @@ export const createRedisClient = async (): Promise<RedisClientType> => {
         console.log('No caching available.');
     }
 };
+
+export const disconnectRedisClient = async (): Promise<void> => {
+    if (redisClient) {
+        try {
+            await redisClient.disconnect();
+            console.log('Redis client disconnected.');
+            redisClient = null; // Set to null to allow reconnection later
+        } catch (error) {
+            console.error('Error disconnecting from Redis:', error);
+        }
+    }
+};

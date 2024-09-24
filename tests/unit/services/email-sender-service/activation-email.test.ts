@@ -3,6 +3,7 @@ import sgMail from '@sendgrid/mail';
 
 jest.mock('@sendgrid/mail', () => ({
     send: jest.fn(),
+    setApiKey: jest.fn(),
 }));
 
 describe('sendActivationEmail', () => {

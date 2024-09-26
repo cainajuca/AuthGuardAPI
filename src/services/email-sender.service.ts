@@ -1,4 +1,5 @@
 import sgMail from '@sendgrid/mail';
+import logger from 'config/logger.config';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -15,11 +16,11 @@ export async function sendResetPasswordEmail(email: string, resetToken: string) 
 
     try {
         await sgMail.send(msg);
-        console.log('Password reset email sent successfully!');
+        logger.info(`Password reset email sent successfully to ${email}`);
     } catch (error) {
-        console.error('Error sending email:', error);
+        logger.error('Error sending reset password email', { error: error.message, stack: error.stack });
         if (error.response) {
-            console.error(error.response.body);
+            logger.error('Error response from SendGrid API', { responseBody: error.response.body });
         }
     }
 }
@@ -41,11 +42,11 @@ export async function sendActivationEmail(email: string, activationToken: string
 
     try {
         await sgMail.send(msg);
-        console.log('Activation email sent successfully!');
+        logger.info(`Activation email sent successfully to ${email}`);
     } catch (error) {
         console.error('Error sending email:', error);
         if (error.response) {
-            console.error(error.response.body);
+            logger.error('Error response from SendGrid API', { responseBody: error.response.body });
         }
     }
 }

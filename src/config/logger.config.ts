@@ -1,27 +1,40 @@
 import { createLogger, format, transports } from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 const { combine, timestamp, printf, colorize, errors } = format;
 
-// Custom format for logs
 const customFormat = printf(({ level, message, timestamp, stack }) => {
 	return `${timestamp} ${level}: ${stack || message}`;
 });
 
-// Create a logger instance
+const errorFileTransport = new DailyRotateFile({
+    level: 'error',
+	filename: 'logs/error-%DATE%.log',
+	datePattern: 'YYYY-MM-DD',
+	maxFiles: '14d',
+	zippedArchive: true,
+});
+
+const combinedFileTransport = new DailyRotateFile({
+    filename: 'logs/combined-%DATE%.log',
+	datePattern: 'YYYY-MM-DD',
+	maxFiles: '30d',
+	zippedArchive: true,
+});
+
 const logger = createLogger({
-	level: 'info', // Default log level. You can adjust it as needed (e.g., 'debug', 'warn', 'error')
+	level: 'info',
 	format: combine(
-		colorize(),  // Colorize log output (useful in development)
+		colorize(),
 		timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-		errors({ stack: true }), // Log the stack trace for errors
-		customFormat // Apply custom format
+		errors({ stack: true }),
+		customFormat
 	),
 	transports: [
-		new transports.Console(), // Log to the console
-		new transports.File({ filename: 'logs/error.log', level: 'error' }), // Log errors to a file
-		new transports.File({ filename: 'logs/combined.log' }) // Log all levels to a file
+		errorFileTransport,
+		combinedFileTransport,
+		new transports.Console(),
 	]
 });
 
-// Export the logger
 export default logger;

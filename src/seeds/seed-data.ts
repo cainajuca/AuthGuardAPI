@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 import { User } from '../models/user';
-import { hashPassword } from '../utils/bcrypt'
+import { hashPassword } from '../utils/bcrypt';
+import logger from 'config/logger.config';
 
 export async function seedData() {
 	try {
@@ -9,7 +10,8 @@ export async function seedData() {
 		await seedAdmin();
         
 	} catch (error) {
-		throw new Error("Failed to initialize database.")
+		logger.error('Failed to initialize database during seeding process.', { error: error.message, stack: error.stack });
+		throw new Error('Failed to initialize database.');
 	}
 }
 
@@ -17,7 +19,9 @@ async function seedUsersCollection() {
 	const collections = await mongoose.connection.db.listCollections({ name: 'users' }).toArray();
 	if (collections.length === 0) {
 		await mongoose.connection.db.createCollection('users');
-		console.log('Users collection created!');
+		logger.info('Users collection created successfully.');
+	} else {
+		logger.info('Users collection already exists. Skipping creation.');
 	}
 }
 
@@ -35,6 +39,8 @@ async function seedAdmin() {
 		});
 
 		await newAdmin.save();
-		console.log('Admin user created!');
+		logger.info('Admin user created successfully.');
+	} else {
+		logger.info('Admin user already exists. Skipping creation.');
 	}
 }

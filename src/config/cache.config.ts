@@ -1,4 +1,5 @@
 import { createClient, RedisClientType } from 'redis';
+import logger from 'config/logger.config';
 
 let redisClient: RedisClientType | null = null;
 
@@ -10,12 +11,12 @@ export const createRedisClient = async (): Promise<RedisClientType> => {
             });
     
             await redisClient.connect();
-            console.log('Redis client connected.');
+            logger.info('Successfully connected to Redis.');
         }
     
         return redisClient;
     } catch (error) {
-        console.log('No caching available.');
+        logger.warn('No caching available. Failed to connect to Redis.', { error: error.message, stack: error.stack });
     }
 };
 
@@ -23,10 +24,10 @@ export const disconnectRedisClient = async (): Promise<void> => {
     if (redisClient) {
         try {
             await redisClient.disconnect();
-            console.log('Redis client disconnected.');
+            logger.info('Redis client disconnected successfully.');
             redisClient = null; // Set to null to allow reconnection later
         } catch (error) {
-            console.error('Error disconnecting from Redis:', error);
+            logger.error('Error disconnecting from Redis.', { error: error.message, stack: error.stack });
         }
     }
 };

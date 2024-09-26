@@ -4,10 +4,6 @@
 
 The **Auth Guard API** is an API for a user authentication system, designed to provide full user management functionalities, including secure authentication. This project is part of a professional portfolio, demonstrating proficiency in NodeJS, NoSQL databases, and DevOps technologies such as Docker and Cloud.
 
-## **Disclaimer**
-
-This project uses a folder and file structure that is more complex than necessary, purely to demonstrate my understanding of advanced project organization patterns. I understand that complex and robust structures are not ideal for simple systems like this one. However, the goal here is to showcase my proficiency in scalable and maintainable software design.
-
 ## **Technologies Used**
 
 - **Language**: Typescript
@@ -17,8 +13,11 @@ This project uses a folder and file structure that is more complex than necessar
   - **Bcrypt**: For hashing passwords securely.
   - **JWT (jsonwebtoken)**: For implementing authentication via access and refresh tokens.
   - **CookieParser**: For handling cookies, particularly for storing refresh tokens in HTTP-only cookies.
-  - **Nodemailer**: For sending emails for password reset and account activation.
+  - **SendGrid Mail**: For sending emails for password reset and account activation.
   - **Redis**: Used for caching the list of active users.
+  - **Jest**: For implementing automatic tests
+  - **Swagger**: Tool for generating interactive API documentation
+  - **Winston**: Logging library supporting multiple transports and log levels
 
 ## **Features**
 
@@ -40,12 +39,12 @@ You can run the project with Docker or directly using Yarn. Below are the steps 
 
 - **Start the containers:**
 ```bash
-docker compose -f docker-compose.dev.yml up --build
+docker compose -f docker-compose.prod.yml up --build
 ```
 
 - **Stop the containers:**
 ```bash
-docker compose -f docker-compose.dev.yml down
+docker compose -f docker-compose.prod.yml down
 ```
 
 ### Using Yarn:
@@ -53,9 +52,9 @@ Alternatively, you can start this API without Docker by cloning this repository 
 
 ```bash
 git clone https://github.com/cainajuca/AuthGuardAPI.git
-yarn install
-yarn build
-yarn start:prod
+npm install
+npm run build
+npm run start:prod
 ```
 
 ## **Project Structure**
@@ -63,31 +62,14 @@ yarn start:prod
 The project follows solid software engineering patterns and principles to ensure maintainability and scalability:
 
 - **Adopted Patterns**:
-  - **Domain-Driven Design (DDD)**
   - **Repository Pattern**
-  - **CQRS (Command Query Responsibility Segregation)**
+  - **Service Layer Pattern**
+  - **Dependency Injection**
+  - **Middleware Pattern**
 
 - **Principles**:
   - **SOLID**
   - **Clean Architecture**
-
-- **DDD Layers**:
-  - **Presentation**: Receives user requests, calls application services, and returns responses. It handles external interaction with the application.
-
-  - **Application**: Orchestrates use cases, coordinating domain logic and managing workflows, without containing business logic.
-
-  - **Domain**: Contains the core business logic, defining rules and concepts of the problem that the system solves, independent of infrastructure.
-
-  - **Infra**: Manages persistence and communication with databases and external services, implementing repositories defined in the domain layer.
-
-  - **Shared**: Contains shared utilities and configurations that are used throughout the project, promoting code reuse and centralized management of common functionalities.
-    - **Config**:
-      - `dependency-injection.ts`: Configures the dependency injection for the entire project.
-      - `env.ts`: Loads environment variables using `dotenv`.
-
-    - **Utils**:
-      - `bcrypt.ts`: Provides password encryption functionality.
-      - `jwt.ts`: Manages JSON Web Token (JWT) generation and validation.
 
 ## **Environment Variables**
 
@@ -111,8 +93,8 @@ The following environment variables must be configured in a `.env` file for the 
 - **`REFRESH_TOKEN_EXPIRY`**: The duration for which a refresh token is valid (e.g., `7d` for 7 days).
 
 ### Email Configuration
-- **`API_EMAIL_USER`**: Email address used by the API to send system emails (e.g., for password reset and account activation).
-- **`API_EMAIL_PASS`**: Password for the email account that sends system emails.
+- **`API_EMAIL_USER`**: Email address used by the API to send system emails (e.g., for password reset and account activation). Current example: `authguardapi@outlook.com`.
+- **`SENDGRID_API_KEY`**: API key for the SendGrid email service used to send system emails. Make sure to replace it with your actual SendGrid API key.
 
 ### URL Configurations
 - **`RESET_URL`**: The URL where users will be redirected to reset their password. Typically, this will be a frontend endpoint.

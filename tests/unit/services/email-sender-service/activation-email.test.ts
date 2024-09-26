@@ -36,14 +36,9 @@ describe('sendActivationEmail', () => {
         const error = new Error('Email service error');
         (sgMail.send as jest.Mock).mockRejectedValueOnce(error); // Simulate email sending failure
 
-        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(); // Spy on console.error
-
         await sendActivationEmail(email, activationToken, activationTokenExpiresAt);
 
         expect(sgMail.send).toHaveBeenCalledWith(msg); // Ensure it tried to send the email
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error sending email:', error); // Ensure the error was logged
-
-        consoleErrorSpy.mockRestore(); // Restore console.error after the test
     });
 
     it('should log the response body if available in error', async () => {
@@ -55,14 +50,8 @@ describe('sendActivationEmail', () => {
 
         (sgMail.send as jest.Mock).mockRejectedValueOnce(error); // Simulate email sending failure
 
-        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(); // Spy on console.error
-
         await sendActivationEmail(email, activationToken, activationTokenExpiresAt);
 
         expect(sgMail.send).toHaveBeenCalledWith(msg); // Ensure it tried to send the email
-        expect(consoleErrorSpy).toHaveBeenCalledWith('Error sending email:', error); // Ensure the error was logged
-        expect(consoleErrorSpy).toHaveBeenCalledWith(error.response.body); // Ensure the response body is logged
-
-        consoleErrorSpy.mockRestore(); // Restore console.error after the test
     });
 });

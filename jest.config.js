@@ -4,6 +4,7 @@ module.exports = {
     moduleFileExtensions: ['ts', 'js'],
     testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
     // testMatch: ['<rootDir>/tests/integration/**/*.test.ts'], // only integration tests
+    // testMatch: ['<rootDir>/tests/unit/**/*<filename_and_extension>'], // aim on specific tests
     transform: {
         '^.+\\.ts$': 'ts-jest',
     },

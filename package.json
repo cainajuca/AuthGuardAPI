@@ -11,7 +11,10 @@
 		"start:prod": "node dist/index.js",
 		"stop:linux": "sudo lsof -t -i :8080 | xargs sudo kill -9",
 		"restart:linux": "npm run stop:linux && npm run start:prod",
-		"test": "jest"
+
+		"test": "jest",
+		"test:unit": "jest --runInBand --testPathIgnorePatterns integration",
+		"test:all": "docker compose -f docker-compose.test.yml up --build --abort-on-container-exit"
 	},
 	"dependencies": {
 		"@sendgrid/mail": "^8.1.3",

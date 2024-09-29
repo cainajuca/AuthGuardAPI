@@ -83,6 +83,26 @@ describe('AuthController - login', () => {
         expect(res.send).toHaveBeenCalledWith(new OutputVM(400, null, ['User does not exist']));
     });
 
+    it('should return 400 if the user is not active', async () => {
+        const user = new User({
+            username: 'inactiveuser',
+            name: 'Inactive User',
+            email: 'inactiveuser@example.com',
+            password: 'hashedpassword',
+            role: 'user',
+            isActive: false,
+        });
+
+        req.body = { username: 'inactiveuser', password: 'password123' };
+        userRepository.findByUsername.mockResolvedValueOnce(user);
+
+        await authController.login(req as Request, res as Response);
+
+        expect(userRepository.findByUsername).toHaveBeenCalledWith('inactiveuser');
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.send).toHaveBeenCalledWith(new OutputVM(400, null, ['User is not active']));
+    });
+
     it('should return 400 if the password is invalid', async () => {
         const user = new User({
             username: 'testuser',

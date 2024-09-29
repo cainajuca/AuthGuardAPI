@@ -89,6 +89,11 @@ export class AuthController implements IAuthController {
 				logger.warn(`Login failed: User not found for username: ${username}`);
 				return res.status(400).send(new OutputVM(400, null, ['User does not exist']));
 			}
+
+			if(!user.isActive) {
+				logger.warn(`Login failed: User is not active: ${username}`);
+				return res.status(400).send(new OutputVM(400, null, ['User is not active']));
+			}
 			
 			const isPasswordValid = await verifyPassword(password, user.password);
 			

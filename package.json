@@ -6,7 +6,7 @@
 	"author": "Cainã Jucá <cainajuca@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc && tsc-alias",
+		"build": "tsc -p tsconfig.build.json && tsc-alias",
 		
 		"start:dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
 		"start:docker:dev": "docker compose -f docker-compose.dev.yml up --build",

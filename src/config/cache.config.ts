@@ -16,7 +16,7 @@ export const createRedisClient = async (): Promise<RedisClientType> => {
     
         return redisClient;
     } catch (error) {
-        logger.warn('No caching available. Failed to connect to Redis.', { error: error.message, stack: error.stack });
+        logger.warn('No caching available. Failed to connect to Redis.');
     }
 };
 
